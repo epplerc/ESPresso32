@@ -25,12 +25,10 @@ List of components:
 - HX711
 - Battery holder
 - lifepo4 accumulator
-- Step up converter
+- Step up (MT3608)
 - Other small parts like wires etc
 
-
-TODO:
-- Image with circuit diagram
+![Schematic](images/schematic.jpg)
 
 ## Android
 You can install the app from the Playstore or build the app from the source.
