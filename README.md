@@ -28,6 +28,7 @@ List of components:
 - Step up (MT3608)
 - Other small parts like wires etc
 
+**Schematic**
 ![Schematic](images/schematic.jpg)
 
 ## Android
