@@ -29,6 +29,7 @@ List of components:
 - Other small parts like wires etc
 
 **Schematic**
+
 ![Schematic](images/schematic.jpg)
 
 ## Android
