@@ -34,8 +34,7 @@ So i was able to omitting one voltage converter.
 
 This is only a  simple example there for sure other setups possible.
 
-####Schematic
-
+#### Schematic
 ![Schematic](images/schematic.jpg)
 
 ## Android
