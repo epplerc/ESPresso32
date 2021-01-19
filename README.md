@@ -14,6 +14,19 @@ Simple flash the espresso32.ino file this is all.
 Now you can install the Android app or use direct BLE
 to communicate with the scale.
 
+### Calibration
+Your build scale will properly not sow corret values from the start.
+To get correct values the scale need to be calibrated to do this
+you need  a something where you know the weight. 
+At best it should not be to light.
+Now start the scale but the calibration weight on it and start the [calibration modus](#characteristics).
+If you want you can set a start calibration value for the autocalibration or determine a calibration
+value by your own.
+The calibration is done when the scale show the weight of you calibration weight.
+You can monitor the status of the calibration with the [status characteristic](#characteristics).
+
+This calibration value need to be set on every start of the scale. The android app to this on his own.
+
 ### Hardware setup
 Beside of the software i have use a simple hardware setup which should only be a example without warranty.
 
