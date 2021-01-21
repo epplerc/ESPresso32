@@ -83,7 +83,7 @@ Espresso time  | 6e980e27-b771-485a-8396-42f1dab56506|  x/-| Time|
 
 ## License
 
-Copyright [2021 Christian Eppler
+Copyright 2021 Christian Eppler
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
