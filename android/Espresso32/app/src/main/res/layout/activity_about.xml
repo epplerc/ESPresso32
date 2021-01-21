@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FCFCFC"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:paddingLeft="10dp"
+            android:text="@string/about"
+            android:textColor="@color/darkgray"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="5dp"
+            android:background="@color/coffee" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="top"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="top"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:paddingLeft="5dp"
+                    android:background="@drawable/round_corner"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/about1"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/project"
+                        android:textSize="20dp"
+                        android:paddingVertical="2dp"
+                        android:singleLine="false"
+                        />
+
+                    <TextView
+                        android:id="@+id/about2"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/version"
+                        android:textSize="20dp"
+                        android:paddingVertical="2dp"
+                        android:singleLine="false"
+                        />
+
+                    <TextView
+                        android:id="@+id/about3"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/name"
+                        android:textSize="20dp"
+                        android:paddingVertical="2dp"
+                        android:singleLine="false"
+                        />
+
+                    <TextView
+                        android:id="@+id/about4"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/email"
+                        android:textSize="20dp"
+                        android:paddingVertical="2dp"
+                        android:singleLine="false"
+                        android:textIsSelectable="true"
+                        android:autoLink="email"
+                        />
+
+                    <TextView
+                        android:id="@+id/about5"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/web"
+                        android:textSize="20dp"
+                        android:paddingVertical="2dp"
+                        android:singleLine="false"
+                        android:textIsSelectable="true"
+                        android:autoLink="web"
+                        />
+
+                    <TextView
+                        android:id="@+id/about6"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/message"
+                        android:textSize="20dp"
+                        android:paddingVertical="2dp"
+                        android:singleLine="false"
+                        android:paddingTop="20dp"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:paddingVertical="20dp">
+
+                        <TextView
+                            android:id="@+id/aboutOSN"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/osn"
+                            android:textSize="20dp"
+                            android:paddingVertical="2dp"
+                            android:singleLine="false"
+                            android:textIsSelectable="true"
+                            android:onClick="showOSN"
+                            android:autoLink="all"
+                            android:textAllCaps="false"
+                            android:textColor="@android:color/holo_red_dark"
+                            android:paddingBottom="10dp"
+                            />
+
+                        <TextView
+                            android:id="@+id/aboutLicence"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/licence"
+                            android:textSize="10dp"
+                            android:singleLine="false"
+                            android:paddingBottom="20dp"
+                            android:inputType="textMultiLine"
+                            android:layout_weight="1"
+                            />
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

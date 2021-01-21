@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+        <color name="colorPrimary">#654a35</color>
+        <color name="colorPrimaryDark">#505050</color>
+        <color name="colorAccent">#f93283</color>
+        <color name="lightgray">#808080</color>
+        <color name="lightlightgray">#f0f0f0</color>
+        <color name="lightlightgray2">#e0e0e0</color>
+        <color name="darkgray">#505050</color>
+        <color name="coffee">#654a35</color>
+</resources>

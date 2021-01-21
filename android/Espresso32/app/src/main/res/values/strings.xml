@@ -1,0 +1,56 @@
+<resources>
+    <string name="app_name">ESPresso32</string>
+    <string name="title_activity_calibrate">CalibrateActivity</string>
+    <string name="title_activity_about">AboutActivity</string>
+    <string name="calibration_set_manual">Set calibration value manual:</string>
+    <string name="calibration_set_determined">Set determined calibration value.</string>
+    <string name="calibration_value">Calibration value:</string>
+    <string name="calibration_start_value">Calibration start value:</string>
+    <string name="calibration_set_value">Set calibration value.</string>
+    <string name="calibration_auto">Auto Calibration:</string>
+    <string name="calibration_weight">Calibration weight:</string>
+    <string name="weight_unit">g</string>
+    <string name="start">START</string>
+    <string name="calibration_start">Start auto calibration.</string>
+    <string name="status">Status:</string>
+    <string name="modus">Modus:</string>
+    <string name="weight">Weight:</string>
+    <string name="time">Time:</string>
+    <string name="set">Set</string>
+    <string name="enable">Enable</string>
+    <string name="ble_enable">Please enable bluetooth</string>
+    <string name="info">Information</string>
+    <string name="about">About</string>
+    <string name="calibration">Calibration</string>
+    <string name="espresso">Espresso</string>
+    <string name="espresso_cup">Please put cup on an click start.</string>
+    <string name="connection_status">Connection status</string>
+    <string name="reconnect">Reconnect</string>
+    <string name="weight_title">Weight</string>
+    <string name="tare">Tare</string>
+
+    <string name="project">Project: ESPresso32</string>
+    <string name="version">Version: 0.1</string>
+    <string name="name">Author: Christian Eppler</string>
+    <string name="email">Email: all@silentchris.de</string>
+    <string name="web">Web: https://github.com/epplerc/ESPresso32</string>
+    <string name="message">You have found bugs or any suggestion write me a E-Mail</string>
+    <string name="osn"><u>Open Source Notices</u></string>
+    <string name="licence">
+Copyright 2021 Christian Eppler\n\n
+
+Licensed under the Apache License, Version 2.0 (the "License");\n
+you may not use this file except in compliance with the License.\n
+You may obtain a copy of the License at\n\n
+
+    <a href='http://www.apache.org/licenses/LICENSE-2.0'>http://www.apache.org/licenses/LICENSE-2.0</a>\n\n
+
+Unless required by applicable law or agreed to in writing, software\n
+distributed under the License is distributed on an "AS IS" BASIS,\n
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n
+See the License for the specific language governing permissions and\n
+limitations under the License.
+    </string>
+    <string name="title_activity_enable_ble">EnableBleActivity</string>
+    <string name="unknown">unknown</string>
+</resources>
