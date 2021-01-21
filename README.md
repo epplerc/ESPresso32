@@ -5,6 +5,8 @@ a corresponding Android App and Bluetooth Low Energy connection.
 
 The ESP32 is programmed with the Arduino IDE.
 
+A [demonstration video](https://youtu.be/5yW7n7iKzck) can be found on youtube.
+
 ## ESP32
 
 ### Software
