@@ -60,7 +60,7 @@ This is only a  simple example there for sure other setups possible.
 ## Android
 To use the android application you need a phone with **Bluetooth Low Energy**.
 
-You can install the app from the [Playstore](https://github.com/epplerc/ESPresso32) or build the app from the source.
+You can install the app from the [Playstore](https://play.google.com/store/apps/details?id=org.weblooker.espresso32) or build the app from the source.
 
 
 If you want to build your application from the source you can do this.
