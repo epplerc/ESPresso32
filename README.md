@@ -53,6 +53,11 @@ You can also use a NodeMCU but this need more space and power.
 
 This is only a  simple example there for sure other setups possible.
 
+---
+**NOTE**
+Depending on which HX711 module you have to should have a look here: [module design fault fix](https://github.com/bogde/HX711/issues/172)
+---
+
 #### Schematic
 
 ![Schematic](images/schematic.jpg)
@@ -81,6 +86,17 @@ Calibration value   | e5c96eed-c523-4e81-9d8b-1f92f58603dc| x/x| Set a calibrati
 Weight   | 2A98| x/-| Weight| Weight in g
 Espresso weight   | d0dac8e6-cf56-4e0c-9823-0aed58dc9bfe|  x/-| The weight in g of espresso| 
 Espresso time  | 6e980e27-b771-485a-8396-42f1dab56506|  x/-| Time| 
+
+
+## Known Issues
+
+### Espresso time is stop to early
+Depending from your setuo this can happen if you use a light espresso cup like a 
+thermoglass in combination with vibrations from the pump. 
+A simple fix is to use a heavy espresso cup. If this is not possible you need to play 
+around with the the threshold on the **messure_espresso()** function.
+In future maby this wil configurable from the app.
+
 
 
 ## License
