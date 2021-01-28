@@ -53,10 +53,9 @@ You can also use a NodeMCU but this need more space and power.
 
 This is only a  simple example there for sure other setups possible.
 
----
-**NOTE**
-Depending on which HX711 module you have to should have a look here: [module design fault fix](https://github.com/bogde/HX711/issues/172)
----
+
+**_NOTE:_** Depending on which HX711 module you have to should have a look here: [module design fault fix](https://github.com/bogde/HX711/issues/172)
+
 
 #### Schematic
 
