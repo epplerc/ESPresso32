@@ -3,12 +3,15 @@
 #include <BLEDevice.h>
 #include <BLEUtils.h>
 #include <BLEServer.h>
+#include <EEPROM.h>
 #include <WiFi.h>
 
-#define DEBUG false
+#define DEBUG true
 
 #define LOADCELL_DOUT_PIN  5
 #define LOADCELL_SCK_PIN  2
+#define EEPROM_SIZE 5
+#define EEPROM_VALUE_IS_STORED 142
 
 #define WEIGHT_SERVICE_UUID "dff971a9-142a-4021-a8d2-f5298ab2bdbb"
 #define SETTINGS_CHARACTERISTIC_UUID "76053035-3aa1-4148-a70d-a73e35332418"
@@ -21,7 +24,12 @@
 
 HX711 scale;
 
-float calibration_factor = 4386.18; 
+union {
+  float floatingpoint;
+  char bytes[4];
+} calibration_factor_union;
+float default_calibration_factor = 4386.18; 
+
 float tare_value = 0.0;
 float weight = 0.0;
 float tared_weight = 0.0;
@@ -44,6 +52,32 @@ BLECharacteristic *pCharacteristicSettings;
 BLECharacteristic *pCharacteristicStatus;
 BLECharacteristic *pCharacteristicEspressoWeight;
 BLECharacteristic *pCharacteristicEspressoTime;
+
+float loadCalibrationValueFromFlash()
+{
+   if(EEPROM_VALUE_IS_STORED == EEPROM.read(4))
+   {
+      for(int i=0;i<4;i++)
+      {
+        calibration_factor_union.bytes[i] = EEPROM.read(i);
+      }
+      return calibration_factor_union.floatingpoint;
+   }
+   
+   calibration_factor_union.floatingpoint = default_calibration_factor;
+   return calibration_factor_union.floatingpoint;
+}
+
+void storeCalibrationValuetoFlash(float calvalue)
+{
+   calibration_factor_union.floatingpoint = calvalue;
+  
+   for(int i=0;i<4;i++)
+    EEPROM.write(i,calibration_factor_union.bytes[i]);
+
+   EEPROM.write(4,EEPROM_VALUE_IS_STORED);
+   EEPROM.commit();
+}
 
 void setStatus(String state_param)
 {
@@ -213,9 +247,9 @@ class CalibrationValueCallbacks: public BLECharacteristicCallbacks {
 #if DEBUG 
         Serial.println("Get value:"+val);
 #endif
-        
-        calibration_factor = val.toFloat();
-        scale.set_scale(calibration_factor);
+
+        storeCalibrationValuetoFlash(val.toFloat());
+        scale.set_scale(calibration_factor_union.floatingpoint);
       }
     }
 };
@@ -224,6 +258,9 @@ void setup() {
   Serial.begin(9600);
 
   WiFi.mode( WIFI_MODE_NULL );
+
+  EEPROM.begin(EEPROM_SIZE);
+  loadCalibrationValueFromFlash();
 
   int i = 0;
   while(!scale.is_ready())
@@ -238,8 +275,9 @@ void setup() {
     i++;
   }
   scale.set_scale();
+  scale.set_gain((byte)128);
   scale.tare();
-  scale.set_scale(calibration_factor);
+  scale.set_scale(calibration_factor_union.floatingpoint);
 
   BLEDevice::init("ESPresso32");
   pServer = BLEDevice::createServer();
@@ -308,7 +346,7 @@ void setup() {
   BLEDevice::startAdvertising();
 
   setModus("WEIGHT_MODUS");
-  setCalibrationFaktor(calibration_factor);
+  setCalibrationFaktor(calibration_factor_union.floatingpoint);
   setStatus("READY");
 }
 
@@ -497,15 +535,18 @@ void calibrate()
   sprintf(message,"Callibration weight is set to %.2f. Start Auto calibration. Please wait...",calibration_weight);
 #endif
   setStatus("AUTO_CALIBRATE");
-
  
   messure_weight_fast();
   int phase = 1;
+  
+  int switching = 1;
+  float weight_before = weight;
+  int switchBack= 0;
   while(true)
   {
 #if DEBUG 
     char message[100];
-    sprintf(message,"Calibrate phase %d ... factor is now %.2f.",phase,calibration_factor);
+    sprintf(message,"Calibrate phase %d ... factor is now %.3f.",phase,calibration_factor_union.floatingpoint);
     Serial.println(message);
 #endif
     if(fabs(weight-calibration_weight) <= allowed_delta)
@@ -521,19 +562,39 @@ void calibrate()
       
       sprintf(status_message,"AUTO_CALIBRATE_PHASE_%d",phase);
       setStatus(status_message);
+      switchBack= 0;
+    }
+    else{
+      switchBack++;
     }
 
-    if(weight-calibration_weight > 0 )
+    if(switchBack > 1000) // We seem to stuck try another starting point
     {
-      calibration_factor += add_factor;
-      scale.set_scale(calibration_factor);
+      allowed_delta = 20.00;
+      add_factor = 50.00;
+      switchBack = 0;
+      phase = 1;
+      calibration_factor_union.floatingpoint = random(-10000.0,+10000.0);
+      continue;
     }
-    else if (weight-calibration_weight < 0)
+
+    if(fabs(weight-calibration_weight) > fabs(weight_before-calibration_weight))
     {
-      calibration_factor -= add_factor;
-      scale.set_scale(calibration_factor);
+      switching = (switching+1)%2;
     }
-    
+
+    if(switching == 1)
+    {
+      calibration_factor_union.floatingpoint += add_factor;
+      scale.set_scale(calibration_factor_union.floatingpoint);
+    }
+    else if (switching == 0)
+    {
+      calibration_factor_union.floatingpoint -= add_factor;
+      scale.set_scale(calibration_factor_union.floatingpoint);
+    }
+
+    weight_before = weight;
     if(phase < 4)
     {
       messure_weight_fast();
@@ -546,7 +607,7 @@ void calibrate()
   }
 
   delay(100);
-  setCalibrationFaktor(calibration_factor);
+  setCalibrationFaktor(calibration_factor_union.floatingpoint);
   calibration_weight_is_set = false;
   setModus("WEIGHT_MODUS");
   setStatus("READY");
