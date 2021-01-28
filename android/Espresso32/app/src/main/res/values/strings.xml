@@ -19,6 +19,7 @@
     <string name="set">Set</string>
     <string name="enable">Enable</string>
     <string name="ble_enable">Please enable bluetooth</string>
+    <string name="gps_enable">Please enable gps\nNeeded for bluetooth device scan</string>
     <string name="info">Information</string>
     <string name="about">About</string>
     <string name="calibration">Calibration</string>
@@ -53,4 +54,13 @@ limitations under the License.
     </string>
     <string name="title_activity_enable_ble">EnableBleActivity</string>
     <string name="unknown">unknown</string>
+    <string name="title_activity_enable_gps">EnableGpsActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>

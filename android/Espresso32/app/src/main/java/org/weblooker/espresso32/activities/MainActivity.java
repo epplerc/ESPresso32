@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -33,7 +34,11 @@ import android.widget.TextView;
 import org.weblooker.espresso32.R;
 import org.weblooker.espresso32.services.ConnectionService;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -94,10 +99,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        ArrayList<String> permissions = new ArrayList<>();
+        permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
+        permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        permissions.add(Manifest.permission.BLUETOOTH);
+        permissions.add(Manifest.permission.BLUETOOTH_ADMIN);
+
         receiver = new MyBroadcastReceiver();
         this.registerReceiver(receiver, new IntentFilter(ConnectionService.ACTION));
-        this.requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        this.requestPermissions(permissions.toArray(new String[0]), 1);
         setContentView(R.layout.activity_main);
     }
 

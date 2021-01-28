@@ -16,6 +16,7 @@
 
 package org.weblooker.espresso32.services;
 
+import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -38,6 +39,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.location.LocationManager;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Handler;
@@ -119,6 +121,16 @@ public class ConnectionService extends Service {
                         stopSelf();
                 }
             }
+            if (action != null && action.equals(LocationManager.PROVIDERS_CHANGED_ACTION)) {
+                LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+                if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+                {
+                    Intent myIntent = new Intent(context, EnableBleActivity.class);
+                    myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(myIntent);
+                }
+            }
+
         }
     }
 
@@ -157,9 +169,18 @@ public class ConnectionService extends Service {
             myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             this.startActivity(myIntent);
         }
+        LocationManager locationManager = (LocationManager)this.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+        {
+            Intent myIntent = new Intent(this, EnableBleActivity.class);
+            myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            this.startActivity(myIntent);
+        }
 
         receiver = new ConnectionService.MyBroadcastReceiver();
-        IntentFilter filter = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+        filter.addAction(LocationManager.PROVIDERS_CHANGED_ACTION);
         registerReceiver(receiver, filter);
     }
 
@@ -350,11 +371,14 @@ public class ConnectionService extends Service {
 
     private final BluetoothGattCallback gattCallback =
             new BluetoothGattCallback() {
+                private boolean initCalibrationValue = true;
+
                 @Override
                 public void onConnectionStateChange(BluetoothGatt gatt, int status,
                                                     int newState) {
                     gatt.requestConnectionPriority(BluetoothGatt.CONNECTION_PRIORITY_HIGH);
                     if (newState == BluetoothProfile.STATE_CONNECTED) {
+                        initCalibrationValue = true;
                         Log.i(TAG, "Connected to GATT server");
                         isConnected.set(true);
                         gatt.discoverServices();
@@ -373,8 +397,8 @@ public class ConnectionService extends Service {
                     Log.i(TAG, "Discovered service: " + gatt.getServices().toString());
                     setNotification(gatt);
 
-                    // Set Calibration value
-                    setCalibrationValue(preferencesUtil.getCalibrationValue());
+                    // Place to get on scale stored values on connect
+                    getCalibrationValue();
                 }
 
                 @Override
@@ -388,6 +412,8 @@ public class ConnectionService extends Service {
                     Log.i(TAG, characteristic.getUuid() + " Value: " + characteristic.getStringValue(0));
                     isWriting.set(false);
                     executeBleCommand();
+
+                    getAndStoreCalibrationValueOfScale(characteristic);
                 }
 
                 @Override
@@ -408,6 +434,13 @@ public class ConnectionService extends Service {
                 public void onMtuChanged(BluetoothGatt gatt, int mtu, int status) {
                     super.onMtuChanged(gatt, mtu, status);
                     Log.d(TAG, "Mtu is changed to: " + mtu);
+                }
+
+                private void getAndStoreCalibrationValueOfScale(BluetoothGattCharacteristic characteristic) {
+                    if(initCalibrationValue && CALIBRATION_VALUE_CHARACTERISTIC_UUID.equals(characteristic.getUuid().toString())) {
+                        preferencesUtil.setCalibrationValue(characteristic.getStringValue(0));
+                        initCalibrationValue = false;
+                    }
                 }
             };
 
