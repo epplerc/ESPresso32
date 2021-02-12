@@ -68,6 +68,7 @@
                             android:onClick="espressoModus"
                             android:padding="10dp"
                             android:text="@string/start"
+                            android:enabled="false"
                             android:textSize="30dp" />
 
                         <TextView
@@ -93,7 +94,7 @@
                         android:layout_height="wrap_content">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="120dp"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
@@ -109,7 +110,7 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:layout_gravity="center"
-                            android:paddingLeft="20dp"
+                            android:paddingLeft="10dp"
                             android:text=""
                             android:textColor="#000"
                             android:textSize="20dp" />
@@ -121,7 +122,7 @@
                         android:layout_height="wrap_content">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="120dp"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
@@ -138,7 +139,7 @@
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
                             android:layout_gravity="center"
-                            android:paddingLeft="20dp"
+                            android:paddingLeft="10dp"
                             android:text=""
                             android:textColor="#000"
                             android:textSize="20dp" />
@@ -149,13 +150,41 @@
                         android:layout_height="wrap_content">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="120dp"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
                             android:layout_gravity="center"
                             android:paddingLeft="20dp"
-                            android:text="@string/weight"
+                            android:text="@string/coffee_in"
+                            android:textColor="#000"
+                            android:textSize="20dp" />
+
+                        <TextView
+                            android:id="@+id/espressoActivityCoffeeIn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:paddingLeft="10dp"
+                            android:text=""
+                            android:textColor="#000"
+                            android:textSize="20dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:paddingLeft="20dp"
+                            android:text="@string/coffee_out"
                             android:textColor="#000"
                             android:textSize="20dp" />
 
@@ -166,7 +195,7 @@
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
                             android:layout_gravity="center"
-                            android:paddingLeft="20dp"
+                            android:paddingLeft="10dp"
                             android:text=""
                             android:textColor="#000"
                             android:textSize="20dp" />
@@ -177,7 +206,7 @@
                         android:layout_height="wrap_content">
 
                         <TextView
-                            android:layout_width="wrap_content"
+                            android:layout_width="120dp"
                             android:layout_height="wrap_content"
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
@@ -194,11 +223,106 @@
                             android:layout_alignParentLeft="true"
                             android:layout_centerVertical="true"
                             android:layout_gravity="center"
-                            android:paddingLeft="20dp"
+                            android:paddingLeft="10dp"
                             android:text=""
                             android:textColor="#000"
                             android:textSize="20dp" />
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:paddingLeft="20dp"
+                            android:text="@string/settings_ratio"
+                            android:textColor="#000"
+                            android:textSize="20dp" />
+
+                        <TextView
+                            android:id="@+id/espressoActivityRatio"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:paddingLeft="10dp"
+                            android:text=""
+                            android:textColor="#000"
+                            android:textSize="20dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:paddingLeft="20dp"
+                            android:text="@string/coffee"
+                            android:textColor="#000"
+                            android:textSize="20dp" />
+
+                        <AutoCompleteTextView
+                            android:id="@+id/coffee"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:paddingTop="2dp"
+                            android:inputType="text"
+                            android:paddingBottom="8dp"
+                            android:layout_gravity="bottom"
+                            android:paddingLeft="10dp"
+                            android:text=""
+                            android:textColor="#000"
+                            android:textSize="20dp"
+                            android:cursorVisible="false"
+                            android:ems="10" >
+                            <requestFocus />
+                        </AutoCompleteTextView>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:paddingLeft="20dp"
+                            android:text="@string/settings_rating"
+                            android:textColor="#000"
+                            android:textSize="20dp" />
+
+                        <RatingBar
+                            android:id="@+id/rating"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="10dp"
+                            style="@style/espressoRatingBar"
+                            android:progressDrawable="@drawable/ratingbar"
+                            android:numStars="5"
+                            android:stepSize="1"
+                            android:isIndicator="true" />
+                    </LinearLayout>
+
+
+
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/flowChart"
                         android:layout_width="match_parent"
@@ -209,6 +333,25 @@
                         android:textColor="#000"
                         android:background="@color/lightlightgray"
                         />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                       <Button android:id="@+id/store"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="bottom"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginBottom="10dp"
+                        android:onClick="storeResult"
+                        android:padding="10dp"
+                        android:text="@string/save"
+                        android:textSize="30dp"
+                        android:visibility="invisible"/>
+                    </LinearLayout>
 
                 </LinearLayout>
             </LinearLayout>

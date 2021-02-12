@@ -4,7 +4,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:padding="10dp"
-android:background="#FCFCFC">
+android:background="@color/lightlightgray">
 <ScrollView
     android:layout_width="fill_parent"
     android:layout_height="wrap_content">
@@ -134,7 +134,11 @@ android:background="#FCFCFC">
 
                         <RelativeLayout
                             android:layout_width="fill_parent"
-                            android:layout_height="fill_parent">
+                            android:layout_height="fill_parent"
+                            android:onClick="storeWeight"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:background="?android:attr/selectableItemBackground">
                             <TextView
                                 android:layout_gravity="center"
                                 android:layout_width="wrap_content"
@@ -172,7 +176,8 @@ android:background="#FCFCFC">
                 android:foreground="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:id="@+id/EspressoCard"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="190dp"
                 android:layout_margin="10dp"
                 android:padding="0dp"
@@ -221,6 +226,61 @@ android:background="#FCFCFC">
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
+                android:id="@+id/timeline"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="190dp"
+                android:layout_margin="10dp"
+                android:padding="0dp"
+                android:onClick="startTimelineActivity">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_gravity="left"
+                        android:paddingLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/timeline"
+                        android:textSize="25dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/darkgray"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/coffee"
+                        android:layout_margin="5dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_height="130dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/round_corner">
+
+                        <RelativeLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent">
+                            <ImageView
+                                android:layout_gravity="center"
+                                android:layout_width="200dp"
+                                android:layout_height="200dp"
+                                android:src="@mipmap/timeline"
+                                android:paddingBottom="10dp"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerVertical="true"/>
+                        </RelativeLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
 
 
@@ -236,8 +296,64 @@ android:background="#FCFCFC">
             <androidx.cardview.widget.CardView
                 android:foreground="?android:attr/selectableItemBackground"
                 android:clickable="true"
+                android:id="@+id/settingsCard"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="190dp"
+                android:layout_margin="10dp"
+                android:padding="0dp"
+                android:onClick="startSettingsActivity">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_gravity="left"
+                        android:paddingLeft="10dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/settings"
+                        android:textSize="25dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/darkgray"/>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/coffee"
+                        android:layout_margin="5dp"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_height="130dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/round_corner">
+
+                        <RelativeLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent">
+                            <ImageView
+                                android:layout_gravity="center"
+                                android:layout_width="200dp"
+                                android:layout_height="200dp"
+                                android:src="@mipmap/settings"
+                                android:paddingBottom="10dp"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerVertical="true"/>
+                        </RelativeLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:foreground="?android:attr/selectableItemBackground"
+                android:clickable="true"
                 android:id="@+id/calibrateCard"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="190dp"
                 android:layout_margin="10dp"
                 android:padding="0dp"
@@ -278,7 +394,7 @@ android:background="#FCFCFC">
                                 android:layout_gravity="center"
                                 android:layout_width="200dp"
                                 android:layout_height="200dp"
-                                android:src="@mipmap/settings"
+                                android:src="@mipmap/callibrate"
                                 android:paddingBottom="10dp"
                                 android:layout_alignParentLeft="true"
                                 android:layout_centerVertical="true"/>
@@ -299,7 +415,8 @@ android:background="#FCFCFC">
                 android:foreground="?android:attr/selectableItemBackground"
                 android:clickable="true"
                 android:id="@+id/aboutCard"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="190dp"
                 android:layout_margin="10dp"
                 android:padding="0dp"
@@ -348,10 +465,17 @@ android:background="#FCFCFC">
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:visibility="invisible"
+                android:clickable="false"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="190dp"
+                android:layout_margin="10dp"
+                android:padding="0dp"
+                android:onClick="startAboutActivity" />
         </LinearLayout>
-
-
-
 
 
     </LinearLayout>

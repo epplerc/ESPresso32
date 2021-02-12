@@ -35,12 +35,109 @@ public class PreferencesUtil {
         return sharedPref.getString(Preference.CALIPRATION_VALUE.name(), "5000.0");
     }
 
-    public void setCalibrationValue(String value)
-    {
+    public void setCalibrationValue(String value) {
         SharedPreferences sharedPref = context
                 .getSharedPreferences("org.weblooker.espresso32.PREFERENCE_MAIN", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString(Preference.CALIPRATION_VALUE.name(), value);
+        editor.apply();
+    }
+
+    public float getWeightOfCoffee() {
+        SharedPreferences sharedPref = context
+                .getSharedPreferences("org.weblooker.espresso32.PREFERENCE_MAIN", Context.MODE_PRIVATE);
+        return sharedPref.getFloat(Preference.COFFEE_WEIGHT.name(), 0.0f);
+    }
+
+    public void setWeightOfCoffee(float coffeeWeight) {
+        SharedPreferences sharedPref = context
+                .getSharedPreferences("org.weblooker.espresso32.PREFERENCE_MAIN", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putFloat(Preference.COFFEE_WEIGHT.name(), coffeeWeight);
+        editor.apply();
+    }
+
+    public float getDefaultCoffeeIn() {
+        SharedPreferences sharedPref = context
+                .getSharedPreferences("org.weblooker.espresso32.PREFERENCE_MAIN", Context.MODE_PRIVATE);
+        return sharedPref.getFloat(Preference.DEFAULT_COFFEE_WEIGHT.name(), -1.0f);
+    }
+
+    public void setDefaultCoffeeIn(float coffeeWeight) {
+        SharedPreferences sharedPref = context
+                .getSharedPreferences("org.weblooker.espresso32.PREFERENCE_MAIN", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putFloat(Preference.DEFAULT_COFFEE_WEIGHT.name(), coffeeWeight);
+        editor.apply();
+    }
+
+    public float getRatio() {
+        SharedPreferences sharedPref = context
+                .getSharedPreferences("org.weblooker.espresso32.PREFERENCE_MAIN", Context.MODE_PRIVATE);
+        return sharedPref.getFloat(Preference.RATIO.name(), 2.0f);
+    }
+
+    public void setRatio(float ratio) {
+        SharedPreferences sharedPref = context
+                .getSharedPreferences("org.weblooker.espresso32.PREFERENCE_MAIN", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putFloat(Preference.RATIO.name(), ratio);
+        editor.apply();
+    }
+
+    public float getPerfectTime() {
+        SharedPreferences sharedPref = context
+                .getSharedPreferences("org.weblooker.espresso32.PREFERENCE_MAIN", Context.MODE_PRIVATE);
+        return sharedPref.getFloat(Preference.PERFECT_TIME.name(), 25.0f);
+    }
+
+    public void setPerfectTime(float time) {
+        SharedPreferences sharedPref = context
+                .getSharedPreferences("org.weblooker.espresso32.PREFERENCE_MAIN", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putFloat(Preference.PERFECT_TIME.name(), time);
+        editor.apply();
+    }
+
+    public float getMinTime() {
+        SharedPreferences sharedPref = context
+                .getSharedPreferences("org.weblooker.espresso32.PREFERENCE_MAIN", Context.MODE_PRIVATE);
+        return sharedPref.getFloat(Preference.MIN_TIME.name(), 22.0f);
+    }
+
+    public void setMinTime(float time) {
+        SharedPreferences sharedPref = context
+                .getSharedPreferences("org.weblooker.espresso32.PREFERENCE_MAIN", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putFloat(Preference.MIN_TIME.name(), time);
+        editor.apply();
+    }
+
+    public float getMaxTime() {
+        SharedPreferences sharedPref = context
+                .getSharedPreferences("org.weblooker.espresso32.PREFERENCE_MAIN", Context.MODE_PRIVATE);
+        return sharedPref.getFloat(Preference.MAX_TIME.name(), 30.0f);
+    }
+
+    public void setMaxTime(float time) {
+        SharedPreferences sharedPref = context
+                .getSharedPreferences("org.weblooker.espresso32.PREFERENCE_MAIN", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putFloat(Preference.MAX_TIME.name(), time);
+        editor.apply();
+    }
+
+    public String getLastSelectedCoffee() {
+        SharedPreferences sharedPref = context
+                .getSharedPreferences("org.weblooker.espresso32.PREFERENCE_MAIN", Context.MODE_PRIVATE);
+        return sharedPref.getString(Preference.LAST_SELECTED_COFFEE.name(), "");
+    }
+
+    public void setLastSelectedCoffee(String name) {
+        SharedPreferences sharedPref = context
+                .getSharedPreferences("org.weblooker.espresso32.PREFERENCE_MAIN", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(Preference.LAST_SELECTED_COFFEE.name(), name);
         editor.apply();
     }
 }

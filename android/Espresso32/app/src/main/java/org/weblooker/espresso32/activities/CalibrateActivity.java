@@ -26,9 +26,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.TextView;
 
 import org.weblooker.espresso32.R;
+import org.weblooker.espresso32.models.BleStatus;
+import org.weblooker.espresso32.models.ScaleStatus;
 import org.weblooker.espresso32.services.ConnectionService;
 import org.weblooker.espresso32.utils.PreferencesUtil;
 
@@ -48,7 +52,7 @@ public class CalibrateActivity extends AppCompatActivity {
             String value;
             if (ConnectionService.WEIGHT_CHARACTERISTIC_UUID.equals(intent.getStringExtra("type"))) {
                 value = intent.getStringExtra("value");
-                TextView textView = (TextView) findViewById(R.id.calibrationActivityWeight);
+                TextView textView = findViewById(R.id.calibrationActivityWeight);
                 textView.setText(value);
             }
             if (ConnectionService.SETTINGS_CHARACTERISTIC_UUID.equals(intent.getStringExtra("type"))) {
@@ -56,28 +60,40 @@ public class CalibrateActivity extends AppCompatActivity {
             }
             if (ConnectionService.CALIBRATION_VALUE_CHARACTERISTIC_UUID.equals(intent.getStringExtra("type"))) {
                 value = intent.getStringExtra("value");
-                TextView textView = (TextView) findViewById(R.id.calibrationActivityCalVal);
+                TextView textView = findViewById(R.id.calibrationActivityCalVal);
                 textView.setText(value);
             }
             if (ConnectionService.STATUS_CHARACTERISTIC_UUID.equals(intent.getStringExtra("type"))) {
                 value = intent.getStringExtra("value");
-                TextView textView = (TextView) findViewById(R.id.calibrateActivityModus);
+                TextView textView = findViewById(R.id.calibrateActivityModus);
                 textView.setText(value);
 
-                if(value != null && value.equals("READY"))
-                {
-                    textView = (TextView) findViewById(R.id.calibrationActivityCalVal);
-                    if(textView.getText().toString().length() > 0) {
-                        textView = (TextView) findViewById(R.id.setCalibrationButton);
+                if (value != null && value.equals(ScaleStatus.READY.toString())) {
+                    textView = findViewById(R.id.calibrationActivityCalVal);
+                    if (textView.getText().toString().length() > 0) {
+                        textView = findViewById(R.id.setCalibrationButton);
                         textView.setEnabled(true);
                     }
-                    textView = (TextView) findViewById(R.id.setManualCalibrationButton);
+                    textView = findViewById(R.id.setManualCalibrationButton);
                     textView.setEnabled(true);
-                    textView = (TextView) findViewById(R.id.calibrateModus);
+                    textView = findViewById(R.id.calibrateModus);
                     textView.setEnabled(true);
                 }
 
 
+            }
+            if (ConnectionService.CONNECTION_STATUS_INTEND_EXTRA_NAME.equals(intent.getStringExtra("type"))) {
+                value = intent.getStringExtra("value");
+                Button btn = findViewById(R.id.setManualCalibrationButton);
+                Button btn2 = findViewById(R.id.calibrateModus);
+                if (BleStatus.CONNECTED.toString().equals(value)) {
+                    mConnectionService.getCalibrationValue();
+                    btn.setEnabled(true);
+                    btn2.setEnabled(true);
+                } else {
+                    btn.setEnabled(false);
+                    btn2.setEnabled(false);
+                }
             }
         }
     }
@@ -105,6 +121,10 @@ public class CalibrateActivity extends AppCompatActivity {
             ConnectionService.ConnectionServiceBinder myBinder = (ConnectionService.ConnectionServiceBinder) service;
             mConnectionService = myBinder.getService();
             mConnectionServiceBound = true;
+            if (mConnectionService.connectionStatus().equals(BleStatus.CONNECTED.toString())) {
+                mConnectionService.getCalibrationValue();
+                activateButton();
+            }
         }
     };
 
@@ -124,48 +144,54 @@ public class CalibrateActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calibrate);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         receiver = new CalibrateActivity.MyBroadcastReceiver();
         this.registerReceiver(receiver, new IntentFilter(ConnectionService.ACTION));
         PreferencesUtil preferencesUtil = new PreferencesUtil(this.getApplicationContext());
 
-        String value =  preferencesUtil.getCalibrationValue();
-        TextView textView = (TextView) findViewById(R.id.calibrateActivityCalValueManual);
+        String value = preferencesUtil.getCalibrationValue();
+        TextView textView = findViewById(R.id.calibrateActivityCalValueManual);
         textView.setText(value);
-        textView = (TextView) findViewById(R.id.calibrateActivityCalStartValue);
+        textView = findViewById(R.id.calibrateActivityCalStartValue);
         textView.setText(value);
     }
 
     public void calibrateModus(View view) {
-        TextView textView = (TextView) findViewById(R.id.calibrateActivityCalStartValue);
+        TextView textView = findViewById(R.id.calibrateActivityCalStartValue);
         String startCalValue = textView.getText().toString();
         mConnectionService.setCalibrationValue(startCalValue);
 
-        textView = (TextView) findViewById(R.id.calibrateActivityCalWeight);
+        textView = findViewById(R.id.calibrateActivityCalWeight);
         String weight = textView.getText().toString();
         mConnectionService.setCalibrationWeight(weight);
         mConnectionService.setCalibrationModus();
         boolean executed = mConnectionService.getCalibrationValue();
 
-        if(executed) {
-            textView = (TextView) findViewById(R.id.setManualCalibrationButton);
+        if (executed) {
+            textView = findViewById(R.id.setManualCalibrationButton);
             textView.setEnabled(false);
-            textView = (TextView) findViewById(R.id.calibrateModus);
+            textView = findViewById(R.id.calibrateModus);
             textView.setEnabled(false);
         }
     }
 
-    public void setCalibrationValue(View view)
-    {
-        TextView textView = (TextView) findViewById(R.id.calibrationActivityCalVal);
+    public void setCalibrationValue(View view) {
+        TextView textView = findViewById(R.id.calibrationActivityCalVal);
         String calValue = textView.getText().toString();
         mConnectionService.setCalibrationValue(calValue);
     }
 
-    public void setCalibrationValueManual(View view)
-    {
-        TextView textView = (TextView) findViewById(R.id.calibrateActivityCalValueManual);
+    public void setCalibrationValueManual(View view) {
+        TextView textView = findViewById(R.id.calibrateActivityCalValueManual);
         String calValue = textView.getText().toString();
         mConnectionService.setCalibrationValue(calValue);
+    }
+
+    public void activateButton() {
+        Button btn = findViewById(R.id.setManualCalibrationButton);
+        Button btn2 = findViewById(R.id.calibrateModus);
+        btn.setEnabled(true);
+        btn2.setEnabled(true);
     }
 }

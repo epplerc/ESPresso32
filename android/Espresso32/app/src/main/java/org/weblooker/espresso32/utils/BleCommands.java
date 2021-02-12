@@ -51,7 +51,7 @@ public class BleCommands {
     }
 
     public BleJob getNextEntry() {
-        return (BleJob) writeQueue.poll();
+        return writeQueue.poll();
     }
 
     public boolean commandQueueHasEntries() {

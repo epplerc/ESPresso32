@@ -14,27 +14,34 @@
  * limitations under the License.
  */
 
-package org.weblooker.espresso32.activities;
+package org.weblooker.espresso32.models;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
+public class DiagramLine {
 
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
+    private float x;
+    private float y;
 
-import org.weblooker.espresso32.R;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-public class AboutActivity extends AppCompatActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_about);
+    public DiagramLine() {
     }
 
-    public void showOSN(View view) {
-        startActivity(new Intent(this, OssLicensesMenuActivity.class));
+    public DiagramLine(float x, float y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public float getX() {
+        return x;
+    }
+
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public float getY() {
+        return y;
+    }
+
+    public void setY(float y) {
+        this.y = y;
     }
 }

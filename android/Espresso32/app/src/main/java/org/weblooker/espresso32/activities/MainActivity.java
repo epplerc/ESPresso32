@@ -23,28 +23,30 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
 import org.weblooker.espresso32.R;
+import org.weblooker.espresso32.models.BleStatus;
 import org.weblooker.espresso32.services.ConnectionService;
+import org.weblooker.espresso32.utils.PreferencesUtil;
+import org.weblooker.espresso32.utils.UiUtil;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 public class MainActivity extends AppCompatActivity {
 
     private ConnectionService mConnectionService;
     private boolean mConnectionServiceBound = false;
     private MyBroadcastReceiver receiver = null;
+    private PreferencesUtil pref;
 
     private class MyBroadcastReceiver extends BroadcastReceiver {
 
@@ -54,17 +56,17 @@ public class MainActivity extends AppCompatActivity {
 
             if (ConnectionService.WEIGHT_CHARACTERISTIC_UUID.equals(intent.getStringExtra("type"))) {
                 value = intent.getStringExtra("value");
-                TextView textView = (TextView) findViewById(R.id.Weight);
+                TextView textView = findViewById(R.id.Weight);
                 textView.setText(value + "g");
             }
             if (ConnectionService.CONNECTION_STATUS_INTEND_EXTRA_NAME.equals(intent.getStringExtra("type"))) {
                 value = intent.getStringExtra("value");
-                TextView textView = (TextView) findViewById(R.id.ConnectionStatus);
+                TextView textView = findViewById(R.id.ConnectionStatus);
                 textView.setText(value);
 
-                Button btn = (Button) findViewById(R.id.reconnect);
-                if (ConnectionService.CONNECTION_STATUS_CONNECTED.equals(value) ||
-                        ConnectionService.CONNECTION_STATUS_SCANNING.equals(value)) {
+                Button btn = findViewById(R.id.reconnect);
+                if (BleStatus.CONNECTED.toString().equals(value) ||
+                        BleStatus.SCANNING.toString().equals(value)) {
                     btn.setEnabled(false);
                 } else {
                     btn.setEnabled(true);
@@ -79,13 +81,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void startEspressoActivity(View view) {
         Intent myIntent = new Intent(MainActivity.this, EspressoActivity.class);
-        myIntent.putExtra("key", "test"); //Optional parameters
         MainActivity.this.startActivity(myIntent);
     }
 
     public void startCalibrateActivity(View view) {
         Intent myIntent = new Intent(MainActivity.this, CalibrateActivity.class);
-        myIntent.putExtra("key", "test"); //Optional parameters
         MainActivity.this.startActivity(myIntent);
     }
 
@@ -94,10 +94,34 @@ public class MainActivity extends AppCompatActivity {
         MainActivity.this.startActivity(myIntent);
     }
 
+    public void startSettingsActivity(View view) {
+        Intent myIntent = new Intent(MainActivity.this, SettingsActivity.class);
+        MainActivity.this.startActivity(myIntent);
+    }
+
+    public void startTimelineActivity(View view) {
+        Intent myIntent = new Intent(MainActivity.this, TimelineActivity.class);
+        MainActivity.this.startActivity(myIntent);
+    }
+
+    public void storeWeight(View view) {
+        TextView textView = findViewById(R.id.Weight);
+        String weightString = textView.getText().toString();
+        float weight;
+        try {
+            weight = Float.parseFloat(weightString.subSequence(0, weightString.indexOf("g") - 1).toString());
+            pref.setWeightOfCoffee(weight);
+        } catch (Exception e) {
+            // Nothing to do can be happen if no weight is shown
+            return;
+        }
+        UiUtil.makeToast(this, getString(R.string.remember_weight) + weightString);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         ArrayList<String> permissions = new ArrayList<>();
         permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
@@ -105,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
         permissions.add(Manifest.permission.BLUETOOTH);
         permissions.add(Manifest.permission.BLUETOOTH_ADMIN);
 
+        pref = new PreferencesUtil(this.getApplicationContext());
         receiver = new MyBroadcastReceiver();
         this.registerReceiver(receiver, new IntentFilter(ConnectionService.ACTION));
         this.requestPermissions(permissions.toArray(new String[0]), 1);
@@ -129,14 +154,13 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         if (mConnectionServiceBound) {
             String s = mConnectionService.connectionStatus();
-            TextView textView = (TextView) findViewById(R.id.ConnectionStatus);
+            TextView textView = findViewById(R.id.ConnectionStatus);
             textView.setText(s);
 
-            Button btn = (Button) findViewById(R.id.reconnect);
-            btn.setEnabled(!"CONNECTED".equals(s));
+            Button btn = findViewById(R.id.reconnect);
+            btn.setEnabled(!BleStatus.CONNECTED.toString().equals(s));
         }
     }
-
 
     @Override
     protected void onStop() {
@@ -173,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
             this.unregisterReceiver(receiver);
             receiver = null;
         } catch (Exception e) {
-            // Nothing todo
+            // Nothing to do
         }
     }
 

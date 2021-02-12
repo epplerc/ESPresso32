@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FCFCFC"
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:paddingLeft="10dp"
+            android:text="@string/settings"
+            android:textColor="@color/darkgray"
+            android:textSize="25dp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="5dp"
+            android:background="@color/coffee" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="top"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="top"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:background="@drawable/round_corner"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_margin="5dp" />
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:paddingLeft="20dp"
+                            android:text="@string/settings_set_ratio"
+                            android:textColor="#000"
+                            android:textSize="15dp" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="180dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:paddingLeft="20dp"
+                            android:text="@string/settings_ratio"
+                            android:textColor="#000"
+                            android:textSize="20dp" />
+
+                        <EditText
+                            android:id="@+id/settingsRatioValue"
+                            android:layout_width="80dp"
+                            android:layout_height="50dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:paddingLeft="10dp"
+                            android:text=""
+                            android:textColor="#000"
+                            android:textSize="20dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="180dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:paddingLeft="20dp"
+                            android:text="@string/settings_perfect_time"
+                            android:textColor="#000"
+                            android:textSize="20dp" />
+
+                        <EditText
+                            android:id="@+id/settingsPerfectTimeValue"
+                            android:layout_width="80dp"
+                            android:layout_height="50dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:paddingLeft="10dp"
+                            android:text=""
+                            android:textColor="#000"
+                            android:textSize="20dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="180dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:paddingLeft="20dp"
+                            android:text="@string/settings_max_time"
+                            android:textColor="#000"
+                            android:textSize="20dp" />
+
+                        <EditText
+                            android:id="@+id/settingsmaxTimeValue"
+                            android:layout_width="80dp"
+                            android:layout_height="50dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:paddingLeft="10dp"
+                            android:text=""
+                            android:textColor="#000"
+                            android:textSize="20dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="180dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:paddingLeft="20dp"
+                            android:text="@string/settings_min_time"
+                            android:textColor="#000"
+                            android:textSize="20dp" />
+
+                        <EditText
+                            android:id="@+id/settingsminTimeValue"
+                            android:layout_width="80dp"
+                            android:layout_height="50dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:paddingLeft="10dp"
+                            android:text=""
+                            android:textColor="#000"
+                            android:textSize="20dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="180dp"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:paddingLeft="20dp"
+                            android:text="@string/settings_default_coffee_in"
+                            android:textColor="#000"
+                            android:textSize="20dp" />
+
+                        <EditText
+                            android:id="@+id/settingsDefaultCoffeeIn"
+                            android:layout_width="80dp"
+                            android:layout_height="50dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="center"
+                            android:paddingLeft="10dp"
+                            android:text=""
+                            android:textColor="#000"
+                            android:textSize="20dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+                        <Button
+                            android:id="@+id/setRatioButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_gravity="left"
+                            android:layout_marginLeft="20dp"
+                            android:onClick="setEspressoSettings"
+                            android:padding="10dp"
+                            android:text="@string/set"
+                            android:clickable="false"
+                            android:textSize="30dp" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginBottom="15dp"
+                        android:background="@color/coffee" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>

@@ -28,7 +28,13 @@
             android:name=".activities.AboutActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.EnableBleActivity"
+            android:name=".activities.EnableDependenciesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.SettingsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.TimelineActivity"
             android:screenOrientation="portrait" />
 
         <service
@@ -42,12 +48,12 @@
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="true" />
+
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
 </manifest>

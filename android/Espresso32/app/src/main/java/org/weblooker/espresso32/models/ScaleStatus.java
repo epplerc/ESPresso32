@@ -16,13 +16,10 @@
 
 package org.weblooker.espresso32.models;
 
-public enum Preference {
-    CALIPRATION_VALUE,
-    COFFEE_WEIGHT,
-    RATIO,
-    PERFECT_TIME,
-    MIN_TIME,
-    MAX_TIME,
-    DEFAULT_COFFEE_WEIGHT,
-    LAST_SELECTED_COFFEE
+public enum ScaleStatus {
+    READY,
+    TARE,
+    WAITING,
+    MEASSURE,
+    AUTO_CALIBRATE,
 }

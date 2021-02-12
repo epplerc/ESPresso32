@@ -27,19 +27,18 @@ import android.view.View;
 import android.widget.Button;
 
 import org.weblooker.espresso32.R;
-import org.weblooker.espresso32.services.ConnectionService;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-public class EnableBleActivity extends AppCompatActivity {
+public class EnableDependenciesActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE = 4242;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_enable_ble);
+        setContentView(R.layout.activity_enable_dependencies);
         check();
     }
 
@@ -63,15 +62,15 @@ public class EnableBleActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            Intent myIntent = new Intent(EnableBleActivity.this, MainActivity.class);
+            Intent myIntent = new Intent(EnableDependenciesActivity.this, MainActivity.class);
             myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            EnableBleActivity.this.startActivity(myIntent);
+            EnableDependenciesActivity.this.startActivity(myIntent);
         }
     }
 
     private void check() {
-        Button btnBle = (Button) findViewById(R.id.enableBLE);
-        Button btnGps = (Button) findViewById(R.id.enableGPS);
+        Button btnBle = findViewById(R.id.enableBLE);
+        Button btnGps = findViewById(R.id.enableGPS);
 
         BluetoothManager bluetoothManager = (BluetoothManager) this.getApplicationContext().getSystemService(Context.BLUETOOTH_SERVICE);
         BluetoothAdapter mBluetoothAdapter = bluetoothManager.getAdapter();
@@ -87,8 +86,7 @@ public class EnableBleActivity extends AppCompatActivity {
             btnGps.setEnabled(false);
         }
 
-        if(mBluetoothAdapter.isEnabled() && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
-        {
+        if (mBluetoothAdapter.isEnabled() && locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             Intent myIntent = new Intent(this, MainActivity.class);
             myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             this.startActivity(myIntent);

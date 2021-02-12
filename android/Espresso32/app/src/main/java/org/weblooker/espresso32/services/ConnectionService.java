@@ -16,7 +16,6 @@
 
 package org.weblooker.espresso32.services;
 
-import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -48,9 +47,11 @@ import android.os.ParcelUuid;
 import android.util.Log;
 
 import org.weblooker.espresso32.R;
-import org.weblooker.espresso32.activities.EnableBleActivity;
+import org.weblooker.espresso32.activities.EnableDependenciesActivity;
 import org.weblooker.espresso32.activities.MainActivity;
 import org.weblooker.espresso32.models.BleJob;
+import org.weblooker.espresso32.models.BleStatus;
+import org.weblooker.espresso32.models.ScaleModus;
 import org.weblooker.espresso32.utils.BleCommands;
 import org.weblooker.espresso32.utils.PreferencesUtil;
 
@@ -78,15 +79,9 @@ public class ConnectionService extends Service {
     public static final String ESPRESSO_TIME_CHARACTERISTIC_UUID = "6e980e27-b771-485a-8396-42f1dab56506";
 
     public static final String ACTION = "org.weblooker.espresso32.changes";
-    private static final String WEIGHT_MODUS = "WEIGHT_MODUS";
-    private static final String ESPRESSO_MODUS = "ESPRESSO_MODUS";
-    private static final String CALIBRATION_MODUS = "CALIBRATION_MODUS";
     private static final String DEVICE_NAME = "ESPresso32";
 
     private static final long SCAN_PERIOD_TIMEOUT = 10000;
-    public static final String CONNECTION_STATUS_SCANNING = "SCANNING";
-    public static final String CONNECTION_STATUS_DISCONNECTED = "DISCONNECTED";
-    public static final String CONNECTION_STATUS_CONNECTED = "CONNECTED";
     public static final String CONNECTION_STATUS_INTEND_EXTRA_NAME = "CONNECTION_STATUS";
     public static final String SERVICE_NOTICE = "Bluetooth service is running";
 
@@ -115,7 +110,7 @@ public class ConnectionService extends Service {
                 switch (state) {
                     case BluetoothAdapter.STATE_OFF:
                     case BluetoothAdapter.STATE_TURNING_OFF:
-                        Intent myIntent = new Intent(context, EnableBleActivity.class);
+                        Intent myIntent = new Intent(context, EnableDependenciesActivity.class);
                         myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(myIntent);
                         stopSelf();
@@ -123,9 +118,8 @@ public class ConnectionService extends Service {
             }
             if (action != null && action.equals(LocationManager.PROVIDERS_CHANGED_ACTION)) {
                 LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-                if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
-                {
-                    Intent myIntent = new Intent(context, EnableBleActivity.class);
+                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    Intent myIntent = new Intent(context, EnableDependenciesActivity.class);
                     myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(myIntent);
                 }
@@ -165,14 +159,13 @@ public class ConnectionService extends Service {
         BluetoothManager bluetoothManager = (BluetoothManager) this.getApplicationContext().getSystemService(Context.BLUETOOTH_SERVICE);
         mBluetoothAdapter = bluetoothManager.getAdapter();
         if (!mBluetoothAdapter.isEnabled()) {
-            Intent myIntent = new Intent(this, EnableBleActivity.class);
+            Intent myIntent = new Intent(this, EnableDependenciesActivity.class);
             myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             this.startActivity(myIntent);
         }
-        LocationManager locationManager = (LocationManager)this.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-        if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
-        {
-            Intent myIntent = new Intent(this, EnableBleActivity.class);
+        LocationManager locationManager = (LocationManager) this.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            Intent myIntent = new Intent(this, EnableDependenciesActivity.class);
             myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             this.startActivity(myIntent);
         }
@@ -190,7 +183,7 @@ public class ConnectionService extends Service {
         if (checkIfCharacteristicExists(bluetoothGattCharacteristic))
             return false;
 
-       bleCommands.addTarCommandToQueue(bluetoothGattCharacteristic);
+        bleCommands.addTarCommandToQueue(bluetoothGattCharacteristic);
         executeBleCommand();
 
         return true;
@@ -202,7 +195,7 @@ public class ConnectionService extends Service {
         if (checkIfCharacteristicExists(bluetoothGattCharacteristic))
             return false;
 
-        bleCommands.addWriteValueToCommandToQueue(bluetoothGattCharacteristic,ESPRESSO_MODUS);
+        bleCommands.addWriteValueToCommandToQueue(bluetoothGattCharacteristic, ScaleModus.ESPRESSO_MODUS.toString());
         executeBleCommand();
 
         return true;
@@ -214,7 +207,7 @@ public class ConnectionService extends Service {
         if (checkIfCharacteristicExists(bluetoothGattCharacteristic))
             return false;
 
-        bleCommands.addWriteValueToCommandToQueue(bluetoothGattCharacteristic,WEIGHT_MODUS);
+        bleCommands.addWriteValueToCommandToQueue(bluetoothGattCharacteristic, ScaleModus.WEIGHT_MODUS.toString());
         executeBleCommand();
 
         return true;
@@ -226,7 +219,7 @@ public class ConnectionService extends Service {
         if (checkIfCharacteristicExists(bluetoothGattCharacteristic))
             return false;
 
-        bleCommands.addWriteValueToCommandToQueue(bluetoothGattCharacteristic,g);
+        bleCommands.addWriteValueToCommandToQueue(bluetoothGattCharacteristic, g);
         executeBleCommand();
 
         return true;
@@ -238,7 +231,7 @@ public class ConnectionService extends Service {
         if (checkIfCharacteristicExists(bluetoothGattCharacteristic))
             return false;
 
-        bleCommands.addWriteValueToCommandToQueue(bluetoothGattCharacteristic,CALIBRATION_MODUS);
+        bleCommands.addWriteValueToCommandToQueue(bluetoothGattCharacteristic, ScaleModus.CALIBRATION_MODUS.toString());
         executeBleCommand();
 
         return true;
@@ -262,7 +255,7 @@ public class ConnectionService extends Service {
         if (checkIfCharacteristicExists(bluetoothGattCharacteristic))
             return false;
 
-        bleCommands.addWriteValueToCommandToQueue(bluetoothGattCharacteristic,value);
+        bleCommands.addWriteValueToCommandToQueue(bluetoothGattCharacteristic, value);
         executeBleCommand();
 
         preferencesUtil.setCalibrationValue(value);
@@ -302,8 +295,8 @@ public class ConnectionService extends Service {
             return;
         }
 
-        Log.i(TAG, "Execute BLE command: " +  bluetoothGattCharacteristic.getUuid());
-        if ( "write".equals(job.getType())) {
+        Log.i(TAG, "Execute BLE command: " + bluetoothGattCharacteristic.getUuid());
+        if ("write".equals(job.getType())) {
             bluetoothGattCharacteristic.setValue(job.getValue().getBytes());
             bluetoothGatt.get(bluetoothGatt.size() - 1).writeCharacteristic(bluetoothGattCharacteristic);
         } else if ("disconnect".equals(job.getType())) {
@@ -332,9 +325,9 @@ public class ConnectionService extends Service {
 
     public String connectionStatus() {
         if (isConnected.get()) {
-            return "CONNECTED";
+            return BleStatus.CONNECTED.toString();
         } else {
-            return "DISCONNECTED";
+            return BleStatus.DISCONNECTED.toString();
         }
     }
 
@@ -345,8 +338,8 @@ public class ConnectionService extends Service {
         final BluetoothLeScanner bluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
         Log.i(TAG, "Scan");
         if (enable) {
-            if(!isConnected.get())
-                sendConnectionStatusIntent(CONNECTION_STATUS_SCANNING);
+            if (!isConnected.get())
+                sendConnectionStatusIntent(BleStatus.SCANNING.toString());
 
             // Stops scanning after some time
             bleTimeoutHandler.postDelayed(() -> {
@@ -355,9 +348,9 @@ public class ConnectionService extends Service {
                     bluetoothLeScanner.stopScan(mLeScanCallback);
                 } catch (Exception e) {
                     Log.i(TAG, "Looks like bluetooth is not enabled");
-                }finally {
-                    if(!isConnected.get())
-                        sendConnectionStatusIntent(CONNECTION_STATUS_DISCONNECTED);
+                } finally {
+                    if (!isConnected.get())
+                        sendConnectionStatusIntent(BleStatus.DISCONNECTED.toString());
                 }
             }, SCAN_PERIOD_TIMEOUT);
 
@@ -383,10 +376,10 @@ public class ConnectionService extends Service {
                         isConnected.set(true);
                         gatt.discoverServices();
 
-                        sendConnectionStatusIntent(CONNECTION_STATUS_CONNECTED);
+                        sendConnectionStatusIntent(BleStatus.CONNECTED.toString());
                     } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                         isConnected.set(false);
-                        sendConnectionStatusIntent(CONNECTION_STATUS_DISCONNECTED);
+                        sendConnectionStatusIntent(BleStatus.DISCONNECTED.toString());
                         Log.i(TAG, "Disconnected from GATT server");
                     }
                 }
@@ -419,9 +412,20 @@ public class ConnectionService extends Service {
                 @Override
                 public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
                     super.onCharacteristicChanged(gatt, characteristic);
-                    bleCommands.addReadValueToCommandToQueue(characteristic);
+
+                    // For small value the notification has enough space
+                    if (WEIGHT_CHARACTERISTIC_UUID.equals(characteristic.getUuid().toString())) {
+                        Intent intent = new Intent();
+                        intent.setAction(ACTION);
+                        intent.putExtra("type", characteristic.getUuid().toString());
+                        intent.putExtra("value", characteristic.getStringValue(0));
+                        getApplicationContext().sendBroadcast(intent);
+                        Log.i(TAG, "Value has changed/read for characteristic: " + characteristic.getUuid());
+                    } else { // For big values we need to get the value
+                        bleCommands.addReadValueToCommandToQueue(characteristic);
+                        Log.i(TAG, "Value has changed for characteristic: " + characteristic.getUuid());
+                    }
                     executeBleCommand();
-                    Log.i(TAG, "Value has changed for characteristic: " + characteristic.getUuid());
                 }
 
                 @Override
@@ -437,15 +441,14 @@ public class ConnectionService extends Service {
                 }
 
                 private void getAndStoreCalibrationValueOfScale(BluetoothGattCharacteristic characteristic) {
-                    if(initCalibrationValue && CALIBRATION_VALUE_CHARACTERISTIC_UUID.equals(characteristic.getUuid().toString())) {
+                    if (initCalibrationValue && CALIBRATION_VALUE_CHARACTERISTIC_UUID.equals(characteristic.getUuid().toString())) {
                         preferencesUtil.setCalibrationValue(characteristic.getStringValue(0));
                         initCalibrationValue = false;
                     }
                 }
             };
 
-    private void sendConnectionStatusIntent(String status)
-    {
+    private void sendConnectionStatusIntent(String status) {
         Intent intent = new Intent();
         intent.setAction(ACTION);
         intent.putExtra("type", CONNECTION_STATUS_INTEND_EXTRA_NAME);
@@ -471,8 +474,8 @@ public class ConnectionService extends Service {
         public void onBatchScanResults(List<ScanResult> results) {
             super.onBatchScanResults(results);
             String devices = "";
-            for(ScanResult result : results)
-                for(ParcelUuid uuid : result.getDevice().getUuids())
+            for (ScanResult result : results)
+                for (ParcelUuid uuid : result.getDevice().getUuids())
                     devices += " " + uuid.toString();
             Log.i(TAG, "Found devices: " + devices);
         }

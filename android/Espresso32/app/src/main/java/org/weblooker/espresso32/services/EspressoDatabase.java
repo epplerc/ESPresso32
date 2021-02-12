@@ -14,15 +14,19 @@
  * limitations under the License.
  */
 
-package org.weblooker.espresso32.models;
+package org.weblooker.espresso32.services;
 
-public enum Preference {
-    CALIPRATION_VALUE,
-    COFFEE_WEIGHT,
-    RATIO,
-    PERFECT_TIME,
-    MIN_TIME,
-    MAX_TIME,
-    DEFAULT_COFFEE_WEIGHT,
-    LAST_SELECTED_COFFEE
+import org.weblooker.espresso32.daos.CoffeeDao;
+import org.weblooker.espresso32.daos.EspressoResultDao;
+import org.weblooker.espresso32.entities.CoffeeEntity;
+import org.weblooker.espresso32.entities.EspressoResultEntity;
+
+import androidx.room.Database;
+import androidx.room.RoomDatabase;
+
+@Database(entities = {EspressoResultEntity.class, CoffeeEntity.class}, version = 1)
+public abstract class EspressoDatabase extends RoomDatabase {
+    public abstract EspressoResultDao espressoResultDao();
+
+    public abstract CoffeeDao CoffeeDao();
 }
