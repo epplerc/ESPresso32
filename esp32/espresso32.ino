@@ -1,4 +1,3 @@
-
 #include "HX711.h"
 #include <BLEDevice.h>
 #include <BLEUtils.h>
@@ -6,7 +5,7 @@
 #include <EEPROM.h>
 #include <WiFi.h>
 
-#define DEBUG true
+#define DEBUG false
 
 #define LOADCELL_DOUT_PIN  5
 #define LOADCELL_SCK_PIN  2
@@ -125,7 +124,7 @@ void setEspressoResults(unsigned long _times[], float weights[])
    int delay_counter = 0;
    for(int i=0;i<10;i++)
    {
-     if(weights[i] > -1.0)
+     if(weights[i] >= 0.0)
      {
        delay_counter++;
        char tmp_result[35];
@@ -136,7 +135,7 @@ void setEspressoResults(unsigned long _times[], float weights[])
        if(i >= 9)
         continue;
 
-       if(weights[i+1] >-1.0)
+       if(weights[i+1] >= 0.0)
        {
          result.concat(',');
        }
@@ -148,7 +147,7 @@ void setEspressoResults(unsigned long _times[], float weights[])
 
   pCharacteristicEspressoTime->setValue(char_result); 
   pCharacteristicEspressoTime->notify();
-  delay(35*delay_counter); // Waiting until data is send
+  delay(50*delay_counter); // Waiting until data is send
 }
 
 void setWeight(float weight_param)
@@ -360,6 +359,14 @@ void messure_weight()
 #if DEBUG
   Serial.print("Reading: ");
 #endif
+  setWeight(scale.get_units(5));
+}
+
+void messure_weight_calibrate()
+{
+#if DEBUG
+  Serial.print("Reading: ");
+#endif
   setWeight(scale.get_units(10));
 }
 
@@ -461,6 +468,7 @@ void messure_espresso()
   tmp_index = 0; 
   sameCounter = 0;
   unsigned long espresso_end_tmp;
+  float weight_before = 0.0;
   while(true)
   {
 #if DEBUG 
@@ -468,7 +476,7 @@ void messure_espresso()
 #endif    
     float tmp_weight = scale.get_units(3);
     unsigned long time_on_weight = millis();
-    float weight_diff = fabs(tmp_weight-weight);
+    float weight_diff = fabs(tmp_weight-weight_before);
     setWeight(tmp_weight);
 
     if(weight_diff < 0.2 )
@@ -484,6 +492,7 @@ void messure_espresso()
     }
     else if(sameCounter > 0) // It seem that there was a change again its not the end until now
     {
+      weight_before=weight;
       setEspressoResults(tmp_times,tmp_weights);
       for(int i=0;i<10;i++)
       {
@@ -504,6 +513,7 @@ void messure_espresso()
     if(sameCounter == 0) // Without this check the diagram can have a back jump
     {
       setEspressoResult(time_on_weight-espresso_start,tared_weight);
+      weight_before=weight;
     }
   }
   espresso_time = espresso_end - espresso_start;
@@ -601,7 +611,7 @@ void calibrate()
     }
     else
     {
-      messure_weight();
+      messure_weight_calibrate();
     }
     delay(10);
   }
