@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FCFCFC"
+    android:background="@color/lightlightgray"
     android:padding="10dp">
 
     <LinearLayout
@@ -219,7 +219,8 @@
                             android:padding="10dp"
                             android:text="@string/set"
                             android:clickable="false"
-                            android:textSize="30dp" />
+                            android:textSize="20dp"
+                            android:textColor="@color/default_text_color" />
                     </LinearLayout>
 
                     <View

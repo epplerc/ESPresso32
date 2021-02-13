@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FCFCFC"
+    android:background="@color/lightlightgray"
     android:padding="10dp">
 
     <LinearLayout
@@ -57,6 +57,7 @@
                         android:textSize="20dp"
                         android:paddingVertical="2dp"
                         android:singleLine="false"
+                        android:textColor="#000"
                         />
 
                     <TextView
@@ -67,6 +68,7 @@
                         android:textSize="20dp"
                         android:paddingVertical="2dp"
                         android:singleLine="false"
+                        android:textColor="#000"
                         />
 
                     <TextView
@@ -77,6 +79,7 @@
                         android:textSize="20dp"
                         android:paddingVertical="2dp"
                         android:singleLine="false"
+                        android:textColor="#000"
                         />
 
                     <TextView
@@ -89,6 +92,7 @@
                         android:singleLine="false"
                         android:textIsSelectable="true"
                         android:autoLink="email"
+                        android:textColor="#000"
                         />
 
                     <TextView
@@ -101,6 +105,7 @@
                         android:singleLine="false"
                         android:textIsSelectable="true"
                         android:autoLink="web"
+                        android:textColor="#000"
                         />
 
                     <TextView
@@ -112,6 +117,7 @@
                         android:paddingVertical="2dp"
                         android:singleLine="false"
                         android:paddingTop="20dp"
+                        android:textColor="#000"
                         />
 
                     <LinearLayout
@@ -146,6 +152,7 @@
                             android:paddingBottom="20dp"
                             android:inputType="textMultiLine"
                             android:layout_weight="1"
+                            android:textColor="#000"
                             />
                     </LinearLayout>
 

@@ -14,7 +14,16 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
 <resources>
-    <color name="ic_launcher_background">#FCFCFC</color>
+        <color name="colorPrimary">@color/darkgray</color>
+        <color name="colorPrimaryDark">#000000</color>
+        <color name="colorAccent">@color/coffee</color>
+
+        <color name="lightgray">#303030</color>
+        <color name="lightlightgray">#101010</color>
+        <color name="lightlightgray2">#b0b0b0</color>
+        <color name="darkgray">#c0c0c0</color>
+        <color name="coffee">#654a35</color>
+        <color name="default_text_color">#ffffff</color>
+        <color name="button_deactivated">#909090</color>
 </resources>

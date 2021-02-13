@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!--
   ~ Copyright 2021 Christian Eppler
   ~
@@ -14,7 +13,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
-<resources>
-    <color name="ic_launcher_background">#FCFCFC</color>
-</resources>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/button_deactivated" android:state_enabled="false" />
+    <item android:color="@color/lightgray" />
+</selector>

@@ -79,10 +79,11 @@ android:background="@color/lightlightgray">
                                 android:padding="10dp"
                                 android:layout_marginRight="20dp"
                                 android:text="@string/reconnect"
-                                android:textSize="25dp"
+                                android:textSize="20dp"
                                 android:onClick="reconnect"
                                 android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"/>
+                                android:layout_centerVertical="true"
+                                android:textColor="@color/default_text_color"/>
                         </RelativeLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -156,10 +157,11 @@ android:background="@color/lightlightgray">
                                 android:padding="10dp"
                                 android:layout_marginRight="20dp"
                                 android:text="@string/tare"
-                                android:textSize="25dp"
+                                android:textSize="20dp"
                                 android:onClick="tare"
                                 android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"/>
+                                android:layout_centerVertical="true"
+                                android:textColor="@color/default_text_color" />
                         </RelativeLayout>
                     </LinearLayout>
                 </LinearLayout>

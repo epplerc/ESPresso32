@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FCFCFC"
+    android:background="@color/lightlightgray"
     android:padding="10dp">
 
     <LinearLayout
@@ -69,7 +69,8 @@
                             android:padding="10dp"
                             android:text="@string/start"
                             android:enabled="false"
-                            android:textSize="30dp" />
+                            android:textSize="20dp"
+                            android:textColor="@color/default_text_color" />
 
                         <TextView
                             android:id="@+id/espressoActivityNote"
@@ -317,7 +318,7 @@
                             style="@style/espressoRatingBar"
                             android:progressDrawable="@drawable/ratingbar"
                             android:numStars="5"
-                            android:stepSize="1"
+                            android:stepSize="0.5"
                             android:isIndicator="true" />
                     </LinearLayout>
 
@@ -331,7 +332,7 @@
                         android:layout_marginRight="20dp"
                         android:layout_marginTop="15dp"
                         android:textColor="#000"
-                        android:background="@color/lightlightgray"
+                        android:background="@color/lightlightgray2"
                         />
 
                     <LinearLayout
@@ -349,8 +350,9 @@
                         android:onClick="storeResult"
                         android:padding="10dp"
                         android:text="@string/save"
-                        android:textSize="30dp"
-                        android:visibility="invisible"/>
+                        android:textSize="20dp"
+                        android:visibility="invisible"
+                        android:textColor="@color/default_text_color" />
                     </LinearLayout>
 
                 </LinearLayout>
