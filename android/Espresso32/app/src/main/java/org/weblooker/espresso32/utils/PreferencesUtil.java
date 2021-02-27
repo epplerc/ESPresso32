@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import org.weblooker.espresso32.models.Preference;
+import org.weblooker.espresso32.models.Settings;
 
 public class PreferencesUtil {
 
@@ -140,4 +141,24 @@ public class PreferencesUtil {
         editor.putString(Preference.LAST_SELECTED_COFFEE.name(), name);
         editor.apply();
     }
+
+    public Settings exportSettings() {
+        return new Settings()
+                .setCalibrationValue(getCalibrationValue())
+                .setDefaultCoffeeIn(getDefaultCoffeeIn())
+                .setRatio(getRatio())
+                .setPerfectTime(getPerfectTime())
+                .setMaxTime(getMaxTime())
+                .setMinTime(getMinTime());
+    }
+
+    public void importSettings(Settings settings) {
+        setCalibrationValue(settings.getCalibrationValue());
+        setDefaultCoffeeIn(settings.getDefaultCoffeeIn());
+        setRatio(settings.getRatio());
+        setPerfectTime(settings.getPerfectTime());
+        setMaxTime(settings.getMaxTime());
+        setMinTime(settings.getMinTime());
+    }
+
 }

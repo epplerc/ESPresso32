@@ -71,7 +71,7 @@ public class EspressoResultEntity {
 
     @Override
     public String toString() {
-        return "EspressoResultEntitiy{" +
+        return "EspressoResultEntity{" +
                 "uid=" + uuid +
                 ", timestamp=" + date +
                 ", coffeeIn=" + coffeeIn +

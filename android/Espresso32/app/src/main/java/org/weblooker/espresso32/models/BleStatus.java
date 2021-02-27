@@ -16,7 +16,7 @@
 
 package org.weblooker.espresso32.models;
 
-public enum  BleStatus {
+public enum BleStatus {
     CONNECTED,
     DISCONNECTED,
     SCANNING

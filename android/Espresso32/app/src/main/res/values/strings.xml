@@ -89,9 +89,18 @@ limitations under the License.
     <string name="settings_set_max_time"> Set the max time:</string>
     <string name="settings_default_coffee_in"> Default coffee in:</string>
     <string name="settings_saved">Settings saved</string>
-    <string name="remember_weight">\"Remember weight \"</string>
+    <string name="remember_weight">Remember weight </string>
     <string name="note_tar">Note: Tare weight of cup.</string>
     <string name="note_waiting">Note: Waiting for first drop of espresso.</string>
     <string name="note_espresso_progress">Note: Espresso is in progress.</string>
     <string name="note_done">Note: Done.</string>
+    <string name="im_export">Im-/Export</string>
+    <string name="export">Export</string>
+    <string name="import_data">Import</string>
+    <string name="export_data">Export data to file.</string>
+    <string name="import_data_from_file">Import data from file.</string>
+    <string name="import_message">Import successful</string>
+    <string name="export_message">Export successful</string>
+    <string name="import_message_fail">Import fails</string>
+    <string name="export_message_fail">Export fails</string>
 </resources>

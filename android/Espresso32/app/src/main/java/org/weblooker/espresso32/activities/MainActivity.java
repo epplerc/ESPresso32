@@ -104,6 +104,11 @@ public class MainActivity extends AppCompatActivity {
         MainActivity.this.startActivity(myIntent);
     }
 
+    public void startExportActivity(View view) {
+        Intent myIntent = new Intent(MainActivity.this, ExportActivity.class);
+        MainActivity.this.startActivity(myIntent);
+    }
+
     public void storeWeight(View view) {
         TextView textView = findViewById(R.id.Weight);
         String weightString = textView.getText().toString();

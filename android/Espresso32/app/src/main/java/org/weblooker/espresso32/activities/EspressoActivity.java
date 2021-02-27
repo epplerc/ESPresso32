@@ -162,7 +162,7 @@ public class EspressoActivity extends AppCompatActivity {
             if (ConnectionService.CONNECTION_STATUS_INTEND_EXTRA_NAME.equals(intent.getStringExtra("type"))) {
                 value = intent.getStringExtra("value");
                 Button btn = findViewById(R.id.espressoModus);
-                if (BleStatus.CONNECTED.equals(value)) {
+                if (BleStatus.CONNECTED.toString().equals(value)) {
                     btn.setEnabled(true);
                 } else {
                     btn.setEnabled(false);
