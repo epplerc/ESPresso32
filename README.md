@@ -47,7 +47,7 @@ You can also use a NodeMCU but this need more space and power.
 - Battery holder
 - LiFePo4 accumulator
 - Step up (MT3608)
-- Housing
+- Housing ( **[My stl files are located here ](stl)**)
 - (Optional) UART adapter
 - Other small parts like wires etc
 
