@@ -32,6 +32,9 @@ public interface EspressoResultDao {
     @Query("SELECT * FROM EspressoResultEntity ORDER BY  date DESC")
     List<EspressoResultEntity> getAll();
 
+    @Query("SELECT * FROM EspressoResultEntity ORDER BY  date DESC LIMIT 5")
+    List<EspressoResultEntity> getLastFive();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertEspressoResult(EspressoResultEntity espressoResultEntity);
 

@@ -26,6 +26,7 @@ import org.weblooker.espresso32.services.EspressoDatabase;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 import androidx.room.Room;
 
@@ -53,6 +54,10 @@ public class DbUtil {
         return CompletableFuture.supplyAsync(espressoResultDao::getAll);
     }
 
+    public CompletableFuture<List<EspressoResultEntity>> getLastFiveResulsts() {
+        return CompletableFuture.supplyAsync(espressoResultDao::getLastFive);
+    }
+
     public CompletableFuture<Void> storeEspressoResult(EspressoResultEntity espressoResultEntity) {
         return CompletableFuture.runAsync(() -> espressoResultDao.insertEspressoResult(espressoResultEntity));
 
@@ -71,5 +76,4 @@ public class DbUtil {
         return CompletableFuture.runAsync(() -> coffeeDao.insertCoffee(coffeeEntity));
 
     }
-
 }

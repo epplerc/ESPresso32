@@ -18,6 +18,7 @@ package org.weblooker.espresso32.adapter;
 
 import android.content.Context;
 import android.icu.text.SimpleDateFormat;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -187,5 +188,13 @@ public class TimelineRowAdapter extends RecyclerView.Adapter<TimelineRowAdapter.
             menu.add(0, Integer.parseInt(pos.getText().toString()), 1, UiMenuEntries.Edit.toString());
         }
 
+    }
+
+    public void loadAllResultsAsynchronously()
+    {
+        dbUtil.getAllEspressoResults().whenCompleteAsync((list, err) -> {
+            this.setEspressoResultEntities(list);
+            this.notifyDataSetChanged();
+        });
     }
 }

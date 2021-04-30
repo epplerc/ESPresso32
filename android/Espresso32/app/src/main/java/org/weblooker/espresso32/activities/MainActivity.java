@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
             // Nothing to do can be happen if no weight is shown
             return;
         }
-        UiUtil.makeToast(this, getString(R.string.remember_weight) + weightString);
+        UiUtil.makeToast(this, getString(R.string.remember_weight) +" "+ weightString);
     }
 
     @Override

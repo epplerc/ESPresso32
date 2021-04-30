@@ -48,8 +48,12 @@ public class TimelineActivity extends AppCompatActivity {
         adapter = new TimelineRowAdapter(this, new ArrayList<>());
         recyclerView.setAdapter(adapter);
 
-        dbUtil.getAllEspressoResults().whenComplete((list, err) ->
-                adapter.setEspressoResultEntities(list));
+        // Load only last entries
+        dbUtil.getLastFiveResulsts().whenComplete((list, err) -> {
+            adapter.setEspressoResultEntities(list);
+            adapter.notifyDataSetChanged();
+            adapter.loadAllResultsAsynchronously();
+        });
     }
 
     @Override
@@ -66,4 +70,6 @@ public class TimelineActivity extends AppCompatActivity {
         }
         return true;
     }
+
+
 }
