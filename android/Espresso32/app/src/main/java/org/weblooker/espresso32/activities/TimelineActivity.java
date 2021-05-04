@@ -53,7 +53,7 @@ public class TimelineActivity extends AppCompatActivity {
             adapter.setEspressoResultEntities(list);
             adapter.notifyDataSetChanged();
             adapter.loadAllResultsAsynchronously();
-        });
+        }).join();
     }
 
     @Override
