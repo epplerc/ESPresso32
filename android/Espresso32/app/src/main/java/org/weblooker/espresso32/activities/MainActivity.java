@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
         String weightString = textView.getText().toString();
         float weight;
         try {
-            weight = Float.parseFloat(weightString.subSequence(0, weightString.indexOf("g") - 1).toString());
+            weight = Float.parseFloat(weightString.subSequence(0, weightString.indexOf("g")).toString());
             pref.setWeightOfCoffee(weight);
         } catch (Exception e) {
             // Nothing to do can be happen if no weight is shown
