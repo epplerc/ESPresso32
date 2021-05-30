@@ -59,6 +59,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidx.core.app.NotificationCompat;
@@ -84,6 +85,7 @@ public class ConnectionService extends Service {
     private static final long SCAN_PERIOD_TIMEOUT = 10000;
     public static final String CONNECTION_STATUS_INTEND_EXTRA_NAME = "CONNECTION_STATUS";
     public static final String SERVICE_NOTICE = "Bluetooth service is running";
+    public static final String STOP_APP = "stopApp";
 
     private final IBinder mBinder = new ConnectionServiceBinder();
     private final List<BluetoothGattService> services = new ArrayList<>();
@@ -124,7 +126,6 @@ public class ConnectionService extends Service {
                     context.startActivity(myIntent);
                 }
             }
-
         }
     }
 
@@ -138,16 +139,21 @@ public class ConnectionService extends Service {
                     NotificationManager.IMPORTANCE_DEFAULT);
 
             ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
-
             Intent notificationIntent = new Intent(this.getApplicationContext(), MainActivity.class);
             notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            PendingIntent contentIntent = PendingIntent.getActivity(this.getApplicationContext(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent openAppPendingIntent = PendingIntent.getActivity(this.getApplicationContext(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            Intent stopAppIntent = new Intent(STOP_APP);
+            stopAppIntent.putExtra(STOP_APP, true);
+            PendingIntent stopAppPendingIntent = PendingIntent.getBroadcast(this,
+                    new Random().nextInt(), stopAppIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             Notification notification = new NotificationCompat.Builder(this.getApplicationContext(), CHANNEL_ID)
                     .setContentTitle(DEVICE_NAME)
-                    .setContentIntent(contentIntent)
+                    .setContentIntent(openAppPendingIntent)
                     .setSmallIcon(R.drawable.ic_stat_name)
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .addAction(android.R.drawable.ic_menu_close_clear_cancel, getString(R.string.Stop), stopAppPendingIntent)
                     .setContentText(SERVICE_NOTICE).build();
 
             startForeground(1, notification);
@@ -175,6 +181,7 @@ public class ConnectionService extends Service {
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         filter.addAction(LocationManager.PROVIDERS_CHANGED_ACTION);
         registerReceiver(receiver, filter);
+
     }
 
     public boolean tare() {

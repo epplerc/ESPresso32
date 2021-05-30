@@ -72,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
                     btn.setEnabled(true);
                 }
             }
+            if (intent.getBooleanExtra(ConnectionService.STOP_APP,false)) {
+                finishAndRemoveTask();
+            }
         }
     }
 
@@ -137,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
         pref = new PreferencesUtil(this.getApplicationContext());
         receiver = new MyBroadcastReceiver();
         this.registerReceiver(receiver, new IntentFilter(ConnectionService.ACTION));
+        this.registerReceiver(receiver, new IntentFilter(ConnectionService.STOP_APP));
         this.requestPermissions(permissions.toArray(new String[0]), 1);
         setContentView(R.layout.activity_main);
     }

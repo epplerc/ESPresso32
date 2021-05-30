@@ -9,7 +9,7 @@ android {
         applicationId "org.weblooker.espresso32"
         minSdkVersion 24
         targetSdkVersion 29
-        versionCode 7
+        versionCode 8
         versionName "1.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
