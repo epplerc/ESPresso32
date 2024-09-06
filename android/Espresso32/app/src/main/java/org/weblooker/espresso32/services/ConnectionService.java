@@ -141,12 +141,13 @@ public class ConnectionService extends Service {
             ((NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE)).createNotificationChannel(channel);
             Intent notificationIntent = new Intent(this.getApplicationContext(), MainActivity.class);
             notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            PendingIntent openAppPendingIntent = PendingIntent.getActivity(this.getApplicationContext(), 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent openAppPendingIntent = PendingIntent.getActivity(this.getApplicationContext(), 0, notificationIntent,
+                    PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
             Intent stopAppIntent = new Intent(STOP_APP);
             stopAppIntent.putExtra(STOP_APP, true);
             PendingIntent stopAppPendingIntent = PendingIntent.getBroadcast(this,
-                    new Random().nextInt(), stopAppIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    new Random().nextInt(), stopAppIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
             Notification notification = new NotificationCompat.Builder(this.getApplicationContext(), CHANNEL_ID)
                     .setContentTitle(DEVICE_NAME)
@@ -180,7 +181,7 @@ public class ConnectionService extends Service {
         IntentFilter filter = new IntentFilter();
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         filter.addAction(LocationManager.PROVIDERS_CHANGED_ACTION);
-        registerReceiver(receiver, filter);
+        registerReceiver(receiver, filter,RECEIVER_EXPORTED);
 
     }
 

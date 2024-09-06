@@ -104,4 +104,5 @@ limitations under the License.
     <string name="import_message_fail">Import fails</string>
     <string name="export_message_fail">Export fails</string>
     <string name="Stop">Stop</string>
+    <string name="missing_permission">Not all needed permissions are granted!</string>
 </resources>

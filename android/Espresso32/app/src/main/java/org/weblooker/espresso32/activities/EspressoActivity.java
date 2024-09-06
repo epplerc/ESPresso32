@@ -199,7 +199,7 @@ public class EspressoActivity extends AppCompatActivity {
         dbUtil = new DbUtil(this);
         UiUtil.setupAutoCompleteTextView(findViewById(R.id.coffee), dbUtil, pref);
 
-        this.registerReceiver(receiver, new IntentFilter(ConnectionService.ACTION));
+        this.registerReceiver(receiver, new IntentFilter(ConnectionService.ACTION),RECEIVER_EXPORTED);
         initChat();
     }
 

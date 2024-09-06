@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -39,10 +40,13 @@ import org.weblooker.espresso32.utils.UiUtil;
 
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 public class MainActivity extends AppCompatActivity {
 
+    public static final int PERMISSION_REQUEST_CODE = 102;
     private ConnectionService mConnectionService;
     private boolean mConnectionServiceBound = false;
     private MyBroadcastReceiver receiver = null;
@@ -129,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         ArrayList<String> permissions = new ArrayList<>();
@@ -136,26 +141,42 @@ public class MainActivity extends AppCompatActivity {
         permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
         permissions.add(Manifest.permission.BLUETOOTH);
         permissions.add(Manifest.permission.BLUETOOTH_ADMIN);
+        permissions.add(Manifest.permission.BLUETOOTH_SCAN);
+        permissions.add(Manifest.permission.BLUETOOTH_CONNECT);
 
         pref = new PreferencesUtil(this.getApplicationContext());
         receiver = new MyBroadcastReceiver();
-        this.registerReceiver(receiver, new IntentFilter(ConnectionService.ACTION));
-        this.registerReceiver(receiver, new IntentFilter(ConnectionService.STOP_APP));
-        this.requestPermissions(permissions.toArray(new String[0]), 1);
+        this.registerReceiver(receiver, new IntentFilter(ConnectionService.ACTION),RECEIVER_EXPORTED);
+        this.registerReceiver(receiver, new IntentFilter(ConnectionService.STOP_APP),RECEIVER_EXPORTED);
+
+        this.requestPermissions(permissions.toArray(new String[0]), PERMISSION_REQUEST_CODE);
         setContentView(R.layout.activity_main);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE: {
+                for(int i  : grantResults)
+                    if(i != PackageManager.PERMISSION_GRANTED) {
+                        UiUtil.makeToast(this, getString(R.string.missing_permission));
+                        return;
+                    }
+                startService();
+            }
+        }
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        Intent intent = new Intent(this, ConnectionService.class);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(intent);
-        } else {
-            startService(intent);
-        }
-        bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
-
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.BLUETOOTH_CONNECT)
+            == PackageManager.PERMISSION_GRANTED &&
+            ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.BLUETOOTH_SCAN)
+            == PackageManager.PERMISSION_GRANTED
+            )
+            startService();
     }
 
     @Override
@@ -184,6 +205,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         unregisterReceiver();
         super.onDestroy();
+    }
+
+    private void startService() {
+        Intent intent = new Intent(this, ConnectionService.class);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent);
+        } else {
+            startService(intent);
+        }
+        bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
     }
 
     private final ServiceConnection mServiceConnection = new ServiceConnection() {

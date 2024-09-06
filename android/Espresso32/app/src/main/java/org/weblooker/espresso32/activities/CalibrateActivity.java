@@ -147,7 +147,7 @@ public class CalibrateActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         receiver = new CalibrateActivity.MyBroadcastReceiver();
-        this.registerReceiver(receiver, new IntentFilter(ConnectionService.ACTION));
+        this.registerReceiver(receiver, new IntentFilter(ConnectionService.ACTION),RECEIVER_EXPORTED);
         PreferencesUtil preferencesUtil = new PreferencesUtil(this.getApplicationContext());
 
         String value = preferencesUtil.getCalibrationValue();
