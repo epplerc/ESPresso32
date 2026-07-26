@@ -20,6 +20,8 @@ public class BleJob {
     private String type;
     private String value;
     private String characteristic;
+    private String descriptor;
+    private byte[] data;
 
     public String getType() {
         return type;
@@ -43,5 +45,21 @@ public class BleJob {
 
     public void setCharacteristic(String characteristic) {
         this.characteristic = characteristic;
+    }
+
+    public String getDescriptor() {
+        return descriptor;
+    }
+
+    public void setDescriptor(String descriptor) {
+        this.descriptor = descriptor;
+    }
+
+    public byte[] getData() {
+        return data;
+    }
+
+    public void setData(byte[] data) {
+        this.data = data;
     }
 }

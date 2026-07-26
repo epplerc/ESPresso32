@@ -17,49 +17,56 @@
 package org.weblooker.espresso32.utils;
 
 import android.bluetooth.BluetoothGattCharacteristic;
-
+import android.bluetooth.BluetoothGattDescriptor;
 import org.weblooker.espresso32.models.BleJob;
-
 import java.util.LinkedList;
 import java.util.Queue;
 
 public class BleCommands {
 
-    private final Queue<BleJob> writeQueue = new LinkedList<>();
+    private final Queue<BleJob> commandQueue = new LinkedList<>();
 
-    public void addTarCommandToQueue(BluetoothGattCharacteristic bluetoothGattCharacteristic) {
-        BleJob bleJob = new BleJob();
-        bleJob.setType("write");
-        bleJob.setCharacteristic(bluetoothGattCharacteristic.getUuid().toString());
-        bleJob.setValue("tare");
-        writeQueue.add(bleJob);
+    public void addTarCommandToQueue(BluetoothGattCharacteristic characteristic) {
+        BleJob job = new BleJob();
+        job.setType("write");
+        job.setCharacteristic(characteristic.getUuid().toString());
+        job.setValue("tare");
+        commandQueue.add(job);
     }
 
-    public void addWriteValueToCommandToQueue(BluetoothGattCharacteristic bluetoothGattCharacteristic, String value) {
-        BleJob bleJob = new BleJob();
-        bleJob.setType("write");
-        bleJob.setCharacteristic(bluetoothGattCharacteristic.getUuid().toString());
-        bleJob.setValue(value);
-        writeQueue.add(bleJob);
+    public void addWriteValueToCommandToQueue(BluetoothGattCharacteristic characteristic, String value) {
+        BleJob job = new BleJob();
+        job.setType("write");
+        job.setCharacteristic(characteristic.getUuid().toString());
+        job.setValue(value);
+        commandQueue.add(job);
     }
 
-    public void addReadValueToCommandToQueue(BluetoothGattCharacteristic bluetoothGattCharacteristic) {
-        BleJob bleJob = new BleJob();
-        bleJob.setType("read");
-        bleJob.setCharacteristic(bluetoothGattCharacteristic.getUuid().toString());
-        writeQueue.add(bleJob);
+    public void addReadValueToCommandToQueue(BluetoothGattCharacteristic characteristic) {
+        BleJob job = new BleJob();
+        job.setType("read");
+        job.setCharacteristic(characteristic.getUuid().toString());
+        commandQueue.add(job);
+    }
+
+    public void addDescriptorWriteToQueue(BluetoothGattCharacteristic characteristic, String descriptorUuid, byte[] data) {
+        BleJob job = new BleJob();
+        job.setType("write_descriptor");
+        job.setCharacteristic(characteristic.getUuid().toString());
+        job.setDescriptor(descriptorUuid);
+        job.setData(data);
+        commandQueue.add(job);
     }
 
     public BleJob getNextEntry() {
-        return writeQueue.poll();
+        return commandQueue.poll();
     }
 
     public boolean commandQueueHasEntries() {
-        return writeQueue.size() > 0;
+        return !commandQueue.isEmpty();
     }
 
     public void clearCommandQueue() {
-        writeQueue.clear();
+        commandQueue.clear();
     }
-
 }
