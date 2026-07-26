@@ -15,18 +15,13 @@
   -->
 
 <resources>
-    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <item name="actionBarTheme">@style/ActionBarOverwrite</item>
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="materialButtonStyle">@style/material_button_overwrite</item>
     </style>
 
-    <style name="ActionBarOverwrite" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
-        <item name="android:textColorPrimary">@color/darkgray</item>
-        <item name="colorPrimary">@color/lightlightgray2</item>
-    </style>
 
     <style name="material_button_overwrite" parent="@style/Widget.MaterialComponents.Button">
         <item name="backgroundTint">@color/button_color</item>
@@ -37,4 +32,5 @@
         <item name="android:maxHeight">36.5dip</item>
     </style>
 
-</resources>
+
+        </resources>
