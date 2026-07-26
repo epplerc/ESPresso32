@@ -38,6 +38,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ServiceInfo;
 import android.location.LocationManager;
 import android.os.Binder;
 import android.os.Build;
@@ -63,6 +64,7 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 import static java.util.Arrays.asList;
 
@@ -157,7 +159,11 @@ public class ConnectionService extends Service {
                     .addAction(android.R.drawable.ic_menu_close_clear_cancel, getString(R.string.Stop), stopAppPendingIntent)
                     .setContentText(SERVICE_NOTICE).build();
 
-            startForeground(1, notification);
+            if (Build.VERSION.SDK_INT >= 34) {
+                startForeground(1, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_LOCATION | ServiceInfo.FOREGROUND_SERVICE_TYPE_CONNECTED_DEVICE);
+            } else {
+                startForeground(1, notification);
+            }
         }
         bleTimeoutHandler = new Handler();
         preferencesUtil = new PreferencesUtil(this.getApplicationContext());
@@ -165,13 +171,13 @@ public class ConnectionService extends Service {
 
         BluetoothManager bluetoothManager = (BluetoothManager) this.getApplicationContext().getSystemService(Context.BLUETOOTH_SERVICE);
         mBluetoothAdapter = bluetoothManager.getAdapter();
-        if (!mBluetoothAdapter.isEnabled()) {
+        if (mBluetoothAdapter != null && !mBluetoothAdapter.isEnabled()) {
             Intent myIntent = new Intent(this, EnableDependenciesActivity.class);
             myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             this.startActivity(myIntent);
         }
         LocationManager locationManager = (LocationManager) this.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+        if (locationManager != null && !locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             Intent myIntent = new Intent(this, EnableDependenciesActivity.class);
             myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             this.startActivity(myIntent);
@@ -181,7 +187,7 @@ public class ConnectionService extends Service {
         IntentFilter filter = new IntentFilter();
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         filter.addAction(LocationManager.PROVIDERS_CHANGED_ACTION);
-        registerReceiver(receiver, filter,RECEIVER_EXPORTED);
+        ContextCompat.registerReceiver(this, receiver, filter, ContextCompat.RECEIVER_EXPORTED);
 
     }
 
@@ -340,7 +346,7 @@ public class ConnectionService extends Service {
     }
 
     public void scanLeDevice(final boolean enable) {
-        if (!mBluetoothAdapter.isEnabled())
+        if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled())
             return;
 
         final BluetoothLeScanner bluetoothLeScanner = mBluetoothAdapter.getBluetoothLeScanner();
@@ -468,7 +474,7 @@ public class ConnectionService extends Service {
         @Override
         public void onScanResult(int callbackType, ScanResult result) {
             super.onScanResult(callbackType, result);
-            if (!mBluetoothAdapter.isEnabled())
+            if (mBluetoothAdapter == null || !mBluetoothAdapter.isEnabled())
                 return;
 
             if (result.getDevice() != null && result.getDevice().getName() != null &&
@@ -561,6 +567,9 @@ public class ConnectionService extends Service {
         bluetoothGatt.clear();
         services.clear();
         characteristics.clear();
-        unregisterReceiver(receiver);
+        if (receiver != null) {
+            unregisterReceiver(receiver);
+            receiver = null;
+        }
     }
 }

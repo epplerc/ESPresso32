@@ -57,6 +57,7 @@ import org.weblooker.espresso32.utils.UiUtil;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -64,6 +65,7 @@ import java.util.Locale;
 import java.util.UUID;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 public class EspressoActivity extends AppCompatActivity {
 
@@ -125,7 +127,7 @@ public class EspressoActivity extends AppCompatActivity {
                 TextView textViewRatio = findViewById(R.id.espressoActivityRatio);
 
                 for (EspressoResult el : espressoResults.getResults()) {
-                    BigDecimal timeInSeconds = new BigDecimal(el.getT()).divide(new BigDecimal("1000.0"), MathContext.DECIMAL128).setScale(2, BigDecimal.ROUND_HALF_UP);
+                    BigDecimal timeInSeconds = new BigDecimal(el.getT()).divide(new BigDecimal("1000.0"), MathContext.DECIMAL128).setScale(2, RoundingMode.HALF_UP);
                     Float tmpTime = timeInSeconds.floatValue();
                     Float weight = el.getW();
                     Float ratio = weight / coffeeInSelected;
@@ -199,7 +201,7 @@ public class EspressoActivity extends AppCompatActivity {
         dbUtil = new DbUtil(this);
         UiUtil.setupAutoCompleteTextView(findViewById(R.id.coffee), dbUtil, pref);
 
-        this.registerReceiver(receiver, new IntentFilter(ConnectionService.ACTION),RECEIVER_EXPORTED);
+        ContextCompat.registerReceiver(this, receiver, new IntentFilter(ConnectionService.ACTION), ContextCompat.RECEIVER_EXPORTED);
         initChat();
     }
 
@@ -279,9 +281,7 @@ public class EspressoActivity extends AppCompatActivity {
             unbindService(mServiceConnection);
             mConnectionServiceBound = false;
         }
-        if (receiver.isOrderedBroadcast()) {
-            this.unregisterReceiver(receiver);
-        }
+        unregisterReceiver();
     }
 
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -321,8 +321,10 @@ public class EspressoActivity extends AppCompatActivity {
 
     private void unregisterReceiver() {
         try {
-            this.unregisterReceiver(receiver);
-            receiver = null;
+            if (receiver != null) {
+                this.unregisterReceiver(receiver);
+                receiver = null;
+            }
         } catch (Exception e) {
             // Nothing to do
         }

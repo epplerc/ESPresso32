@@ -37,6 +37,7 @@ import org.weblooker.espresso32.services.ConnectionService;
 import org.weblooker.espresso32.utils.PreferencesUtil;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 public class CalibrateActivity extends AppCompatActivity {
 
@@ -105,9 +106,7 @@ public class CalibrateActivity extends AppCompatActivity {
             unbindService(mServiceConnection);
             mConnectionServiceBound = false;
         }
-        if (receiver.isOrderedBroadcast()) {
-            this.unregisterReceiver(receiver);
-        }
+        unregisterReceiver();
     }
 
     private final ServiceConnection mServiceConnection = new ServiceConnection() {
@@ -147,7 +146,7 @@ public class CalibrateActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         receiver = new CalibrateActivity.MyBroadcastReceiver();
-        this.registerReceiver(receiver, new IntentFilter(ConnectionService.ACTION),RECEIVER_EXPORTED);
+        ContextCompat.registerReceiver(this, receiver, new IntentFilter(ConnectionService.ACTION), ContextCompat.RECEIVER_EXPORTED);
         PreferencesUtil preferencesUtil = new PreferencesUtil(this.getApplicationContext());
 
         String value = preferencesUtil.getCalibrationValue();
@@ -193,5 +192,16 @@ public class CalibrateActivity extends AppCompatActivity {
         Button btn2 = findViewById(R.id.calibrateModus);
         btn.setEnabled(true);
         btn2.setEnabled(true);
+    }
+
+    private void unregisterReceiver() {
+        try {
+            if (receiver != null) {
+                this.unregisterReceiver(receiver);
+                receiver = null;
+            }
+        } catch (Exception e) {
+            // Nothing to do
+        }
     }
 }

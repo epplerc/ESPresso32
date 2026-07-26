@@ -139,15 +139,19 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<String> permissions = new ArrayList<>();
         permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION);
         permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
-        permissions.add(Manifest.permission.BLUETOOTH);
-        permissions.add(Manifest.permission.BLUETOOTH_ADMIN);
         permissions.add(Manifest.permission.BLUETOOTH_SCAN);
         permissions.add(Manifest.permission.BLUETOOTH_CONNECT);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            permissions.add(Manifest.permission.POST_NOTIFICATIONS);
+        }
 
         pref = new PreferencesUtil(this.getApplicationContext());
         receiver = new MyBroadcastReceiver();
-        this.registerReceiver(receiver, new IntentFilter(ConnectionService.ACTION),RECEIVER_EXPORTED);
-        this.registerReceiver(receiver, new IntentFilter(ConnectionService.STOP_APP),RECEIVER_EXPORTED);
+        
+        int receiverFlags = ContextCompat.RECEIVER_EXPORTED;
+        
+        ContextCompat.registerReceiver(this, receiver, new IntentFilter(ConnectionService.ACTION), receiverFlags);
+        ContextCompat.registerReceiver(this, receiver, new IntentFilter(ConnectionService.STOP_APP), receiverFlags);
 
         this.requestPermissions(permissions.toArray(new String[0]), PERMISSION_REQUEST_CODE);
         setContentView(R.layout.activity_main);
@@ -234,8 +238,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void unregisterReceiver() {
         try {
-            this.unregisterReceiver(receiver);
-            receiver = null;
+            if (receiver != null) {
+                this.unregisterReceiver(receiver);
+                receiver = null;
+            }
         } catch (Exception e) {
             // Nothing to do
         }

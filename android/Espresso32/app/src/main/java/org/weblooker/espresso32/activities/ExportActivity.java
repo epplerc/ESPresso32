@@ -21,6 +21,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -49,6 +50,7 @@ import java.util.zip.ZipOutputStream;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 public class ExportActivity extends AppCompatActivity {
 
@@ -89,7 +91,7 @@ public class ExportActivity extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_WRITE && resultCode == Activity.RESULT_OK) {
+        if (requestCode == REQUEST_CODE_WRITE && resultCode == Activity.RESULT_OK && data != null) {
             try {
                 writeDataToFile(data.getData());
                 UiUtil.makeToast(this, getString(R.string.export_message));
@@ -98,7 +100,7 @@ public class ExportActivity extends AppCompatActivity {
                 UiUtil.makeToast(this, getString(R.string.export_message_fail));
             }
         }
-        if (requestCode == REQUEST_CODE_READ && resultCode == Activity.RESULT_OK) {
+        if (requestCode == REQUEST_CODE_READ && resultCode == Activity.RESULT_OK && data != null) {
             try {
                 writeDataIntoDB(data.getData());
                 UiUtil.makeToast(this, getString(R.string.import_message));
@@ -109,8 +111,10 @@ public class ExportActivity extends AppCompatActivity {
     }
 
     private void checkForPermissions() {
-        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
+        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.S_V2) {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
+            }
         }
     }
 
@@ -122,6 +126,7 @@ public class ExportActivity extends AppCompatActivity {
     }
 
     private void writeDataToFile(Uri uri) throws IOException {
+        if (uri == null) return;
 
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
              ZipOutputStream zipOutputStream = new ZipOutputStream(byteArrayOutputStream)) {
@@ -133,7 +138,7 @@ public class ExportActivity extends AppCompatActivity {
                     zipOutputStream.write(bytes);
                     zipOutputStream.closeEntry();
                 } catch (IOException e) {
-                    throw new RuntimeException(e.getCause());
+                    throw new RuntimeException(e);
                 }
 
             }).join();
@@ -146,7 +151,7 @@ public class ExportActivity extends AppCompatActivity {
                     zipOutputStream.write(bytes);
                     zipOutputStream.closeEntry();
                 } catch (IOException e) {
-                    throw new RuntimeException(e.getCause());
+                    throw new RuntimeException(e);
                 }
             }).join();
 
@@ -161,12 +166,16 @@ public class ExportActivity extends AppCompatActivity {
             zipOutputStream.close();
             zipOutputStream.flush();
 
-            OutputStream output = getContentResolver().openOutputStream(uri);
-            output.write(byteArrayOutputStream.toByteArray());
+            try (OutputStream output = getContentResolver().openOutputStream(uri)) {
+                if (output != null) {
+                    output.write(byteArrayOutputStream.toByteArray());
+                }
+            }
         }
     }
 
     private void writeDataIntoDB(Uri uri) throws IOException {
+        if (uri == null) return;
 
         try (InputStream inputStream = getContentResolver().openInputStream(uri);
              ZipInputStream zipStream = new ZipInputStream(inputStream)) {
